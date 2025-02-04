@@ -1,0 +1,8 @@
+marimo==0.10.14
+matplotlib
+numpy
+pandas
+scipy
+seaborn
+scikit-learn
+python-dotenv
