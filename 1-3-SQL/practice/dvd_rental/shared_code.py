@@ -1,5 +1,6 @@
 from datetime import date
 
+
 def execute_stmt(stmt, engine):
     with engine.connect() as conn:
         result = conn.execute(stmt)
@@ -33,6 +34,8 @@ def subquery(Func, aliasCol):
 def alias_and_column(table, alias_name, column_name):
     """
     Create an alias for a table and return the alias along with a specific column.
+    # Usage example
+    f2, f2rc = alias_and_column(film, "f2", "replacement_cost")
 
     Parameters:
     - table: The original SQLAlchemy table object.
