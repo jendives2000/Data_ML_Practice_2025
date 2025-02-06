@@ -1,3 +1,5 @@
+from datetime import date
+
 def execute_stmt(stmt, engine):
     with engine.connect() as conn:
         result = conn.execute(stmt)
@@ -26,3 +28,21 @@ def execute_stmt(stmt, engine):
 # Refactoring subquery function:
 def subquery(Func, aliasCol):
     return select(Func(aliasCol)).scalar_subquery()
+
+
+def alias_and_column(table, alias_name, column_name):
+    """
+    Create an alias for a table and return the alias along with a specific column.
+
+    Parameters:
+    - table: The original SQLAlchemy table object.
+    - alias_name: The name of the alias for the table.
+    - column_name: The name of the column to extract from the alias table.
+
+    Returns:
+    - alias_table: The alias of the original table.
+    - alias_table_col: The column object from the alias table.
+    """
+    alias_table = table.alias(alias_name)
+    alias_table_col = getattr(alias_table.c, column_name)
+    return alias_table, alias_table_col
