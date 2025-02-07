@@ -1,5 +1,5 @@
 from datetime import date
-
+import pandas as pd
 
 def execute_stmt(stmt, engine):
     with engine.connect() as conn:
@@ -49,3 +49,13 @@ def alias_and_column(table, alias_name, column_name):
     alias_table = table.alias(alias_name)
     alias_table_col = getattr(alias_table.c, column_name)
     return alias_table, alias_table_col
+
+
+def sql_2_df(stmt):
+    with engine.connect() as conn:
+        result = conn.execute(stmt)  # Execute the SQL statement
+        rows = result.fetchall()  # Fetch all rows
+        columns = result.keys()  # Get column names
+
+    # Convert to a Pandas DataFrame
+    return pd.DataFrame(rows, columns=columns)
