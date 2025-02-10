@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 
-def execute_stmt(stmt, engine):
+def execute_stmt(stmt, engine, output_lim=None):
     with engine.connect() as conn:
         # Compile SQL to string
         compiled_sql = str(stmt.compile(engine))
@@ -26,7 +26,7 @@ def execute_stmt(stmt, engine):
         rows = result.fetchall()
 
         # Print total rows before applying limit
-        print(f"\nTotal rows before limit: {len(total_rows)}")
+        print(f"\nTotal rows selected: {len(total_rows)}")
 
         # Print limit information if applicable
         if lim_num:
@@ -38,8 +38,9 @@ def execute_stmt(stmt, engine):
         # Print column names
         print(" | ".join(result.keys()))
 
-        # Print rows, formatting dates
-        for row in rows:
+        # Print a subset of rows based on output_lim
+        rows_to_print = rows[:output_lim] if output_lim else rows
+        for row in rows_to_print:
             formatted_row = [item.strftime("%Y-%m-%d") if isinstance(item, date) else str(item) for item in row]
             print(" | ".join(formatted_row))
 
