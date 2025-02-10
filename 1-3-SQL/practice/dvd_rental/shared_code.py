@@ -1,29 +1,47 @@
 from datetime import date
+import re
 import pandas as pd
+
 
 def execute_stmt(stmt, engine):
     with engine.connect() as conn:
+        # Compile SQL to string
+        compiled_sql = str(stmt.compile(engine))
+
+        # Extract limit value from the parameterized SQL or check manually set limits
+        limit_match = re.search(r"LIMIT \%\((.*?)\)s", compiled_sql)  # Regex for SQLAlchemy parameterized limit
+        lim_num = None
+        if limit_match:
+            # Extract the parameter key and resolve its value
+            param_key = limit_match.group(1)
+            params = stmt.compile(engine).params
+            lim_num = params.get(param_key)
+
+        # Execute without limit to get total row count
+        stmt_no_limit = stmt.limit(None) if lim_num is not None else stmt
+        total_rows = conn.execute(stmt_no_limit).fetchall()  # Fetch all rows
+
+        # Execute the original statement (with limit if applied)
         result = conn.execute(stmt)
-        rows = result.fetchall()  # Fetch all rows to calculate total count
+        rows = result.fetchall()
 
-        # Print the total number of rows returned
-        print(f"\nTotal rows returned: {len(rows)}")
+        # Print total rows before applying limit
+        print(f"\nTotal rows before limit: {len(total_rows)}")
 
-        print(
-            f"\nRaw SQL query:\n{stmt.compile(engine)}\n"
-        )  # Show the equivalent raw-like SQL query
+        # Print limit information if applicable
+        if lim_num:
+            print(f"Limit of {lim_num} applied. Rows displayed: {len(rows)}")
+
+        # Print raw SQL query
+        print(f"\nRaw SQL query:\n{compiled_sql}\n")
 
         # Print column names
-        print(
-            " | ".join(result.keys())
-        )  # result.keys() returns a list of column names as strings
+        print(" | ".join(result.keys()))
 
+        # Print rows, formatting dates
         for row in rows:
-            formatted_row = [  # if date, format as Y-M-D, else as string
-                item.strftime("%Y-%m-%d") if isinstance(item, date) else str(item)
-                for item in row
-            ]
-            print(" | ".join(formatted_row))  # Separate columns with " | "
+            formatted_row = [item.strftime("%Y-%m-%d") if isinstance(item, date) else str(item) for item in row]
+            print(" | ".join(formatted_row))
 
 
 # Refactoring subquery function:
