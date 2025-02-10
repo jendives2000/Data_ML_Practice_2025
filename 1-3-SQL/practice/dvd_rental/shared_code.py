@@ -1,5 +1,6 @@
-from datetime import date
 import re
+from datetime import date
+
 import pandas as pd
 
 
@@ -9,7 +10,9 @@ def execute_stmt(stmt, engine, output_lim=None):
         compiled_sql = str(stmt.compile(engine))
 
         # Extract limit value from the parameterized SQL or check manually set limits
-        limit_match = re.search(r"LIMIT \%\((.*?)\)s", compiled_sql)  # Regex for SQLAlchemy parameterized limit
+        limit_match = re.search(
+            r"LIMIT \%\((.*?)\)s", compiled_sql
+        )  # Regex for SQLAlchemy parameterized limit
         lim_num = None
         if limit_match:
             # Extract the parameter key and resolve its value
@@ -41,7 +44,10 @@ def execute_stmt(stmt, engine, output_lim=None):
         # Print a subset of rows based on output_lim
         rows_to_print = rows[:output_lim] if output_lim else rows
         for row in rows_to_print:
-            formatted_row = [item.strftime("%Y-%m-%d") if isinstance(item, date) else str(item) for item in row]
+            formatted_row = [
+                item.strftime("%Y-%m-%d") if isinstance(item, date) else str(item)
+                for item in row
+            ]
             print(" | ".join(formatted_row))
 
 
