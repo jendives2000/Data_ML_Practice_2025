@@ -28,6 +28,30 @@ def execute_stmt(stmt, engine, output_lim=None):
         result = conn.execute(stmt)
         rows = result.fetchall()
 
+        # Convert rows to string format for proper column width calculation
+        rows_str = [
+            [
+                str(item) if not isinstance(item, date) else item.strftime("%Y-%m-%d")
+                for item in row
+            ]
+            for row in rows
+        ]
+
+        rows_to_print = rows_str[:output_lim] if (output_lim and rows_str) else rows_str
+
+        # Determine column widths dynamically based on content
+        col_names = [
+            str(col) for col in result.keys()
+        ]  # Ensuring it's a list of strings
+
+        col_widths = [
+            max(
+                len(col_names[i]),
+                max(len(row[i]) for row in rows_str) if rows_str else len(col_names[i]),
+            )
+            for i in range(len(col_names))
+        ]
+
         # Print total rows before applying limit
         print(f"\nTotal rows selected: {len(total_rows)}")
 
@@ -38,17 +62,19 @@ def execute_stmt(stmt, engine, output_lim=None):
         # Print raw SQL query
         print(f"\nRaw SQL query:\n{compiled_sql}\n")
 
-        # Print column names
-        print(" | ".join(result.keys()))
+        # Print the header row (ONLY ONCE) with proper spacing
+        header = " | ".join(
+            col_names[i].ljust(col_widths[i]) for i in range(len(col_names))
+        )
+        print(header)
+        print("-" * len(header))  # Print a separator
 
-        # Print a subset of rows based on output_lim
-        rows_to_print = rows[:output_lim] if output_lim else rows
+        # Print rows with aligned columns
         for row in rows_to_print:
-            formatted_row = [
-                item.strftime("%Y-%m-%d") if isinstance(item, date) else str(item)
-                for item in row
-            ]
-            print(" | ".join(formatted_row))
+            formatted_row = " | ".join(
+                row[i].ljust(col_widths[i]) for i in range(len(col_names))
+            )
+            print(formatted_row)
 
 
 # Refactoring subquery function:
