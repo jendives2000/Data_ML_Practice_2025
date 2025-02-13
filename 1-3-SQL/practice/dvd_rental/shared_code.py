@@ -30,7 +30,11 @@ def format_rows_as_strings(rows):
     """Convertit les données en chaînes de caractères pour assurer une sortie uniforme."""
     return [
         [
-            str(item) if not isinstance(item, date) else item.strftime("%Y-%m-%d")
+            str(item)
+            if not isinstance(item, (date, float))
+            else (
+                item.strftime("%Y-%m-%d") if isinstance(item, date) else f"{item:.2f}"
+            )
             for item in row
         ]
         for row in rows
