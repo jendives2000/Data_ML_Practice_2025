@@ -119,3 +119,9 @@ cython_debug/
 
 # VS Code
 .vscode/
+
+# Ignore zip files
+*.zip
+
+# Ignore DuckDB CLI binary
+duckdb.exe
