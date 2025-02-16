@@ -1,13 +1,13 @@
-def custom_duckdb_conn(memory_limit="10GB", threads=12):
+def custom_conn_conf(memory_limit="5GB", threads=4):
     """
     Create a custom DuckDB connection with specified memory limit and number of threads.
 
     Parameters:
-    memory_limit (str): The maximum amount of system memory to use (default is "10GB").
-    threads (int): The number of CPU threads to use for parallel execution (default is 12).
+    memory_limit (str): The maximum amount of system memory to use (default is "5GB").
+    threads (int): The number of CPU threads to use for parallel execution (default is 4).
 
     Example:
-    new_conn = custom_duckdb_conn(memory_limit="5GB", threads=6)
+    new_conn = custom_conn_conf(memory_limit="10GB", threads=6)
 
     Returns:
     duckdb.DuckDBPyConnection: A DuckDB connection object with the specified configuration.
