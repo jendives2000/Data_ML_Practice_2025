@@ -64,3 +64,37 @@ def install_load_ext(db, extension):
     """
     db.install_extension(f"{extension}")
     db.load_extension(f"{extension}")
+
+import sqlparse
+def convert_2rawSQL(relation):
+    """
+    Convert a DuckDB relation object to a formatted raw SQL query string.
+
+    Parameters:
+    relation (duckdb.DuckDBPyRelation): The DuckDB relation object to convert.
+
+    Example: convert_2rawSQL(my_relation_object)
+
+    Returns:
+    str: The formatted raw SQL query string.
+    """
+    # Get the raw SQL query
+    relation1 = relation.sql_query()
+
+    # Check if there is a FROM clause with a path to a file
+    if "FROM read_csv_auto(" in relation1:
+        # Find the start of the file path
+        start_idx = relation1.find("FROM read_csv_auto([") + len("FROM read_csv_auto([")
+        # Find the end of the file path
+        end_idx = relation1.find("]", start_idx)
+        # Extract the full file path
+        full_path = relation1[start_idx:end_idx]
+        # Extract the file name from the full path
+        file_name = full_path.split("\\")[-1]
+        # Replace the full path with the file name in the raw SQL
+        relation2 = relation1.replace(full_path, file_name)
+
+    # Format the raw SQL for better readability
+    formatted_sql = sqlparse.format(relation2, reindent=True)
+
+    print(formatted_sql)
