@@ -1,3 +1,6 @@
+import duckdb
+import sqlparse
+
 def custom_conn_conf(memory_limit="5GB", threads=4):
     """
     Create a custom DuckDB connection with specified memory limit and number of threads.
@@ -27,7 +30,7 @@ def execute_stmt(stmt, db):
     execute_stmt(stmt, mydb.duckdb)
     Declare stmt first
     """
-    with duckdb.connect(database=f"{db}") as conn:
+    with db.connect() as conn:
         conn.sql(stmt)
 
 
@@ -65,7 +68,7 @@ def install_load_ext(db, extension):
     db.install_extension(f"{extension}")
     db.load_extension(f"{extension}")
 
-import sqlparse
+
 def convert_2rawSQL(relation):
     """
     Convert a DuckDB relation object to a formatted raw SQL query string.
