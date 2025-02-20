@@ -1,6 +1,7 @@
 import duckdb
 import sqlparse
 
+
 def custom_conn_conf(memory_limit="5GB", threads=4):
     """
     Create a custom DuckDB connection with specified memory limit and number of threads.
