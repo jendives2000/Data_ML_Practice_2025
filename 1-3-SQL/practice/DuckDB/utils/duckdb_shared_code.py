@@ -103,19 +103,20 @@ def convert_2rawSQL(relation):
 
     print(formatted_sql)
 
-    def shell_commd(stmt):
-        """
-        Execute a DuckDB SQL statement using the system shell command.
 
-        Parameters:
-        stmt (str): The SQL statement to execute.
+def shell_commd(stmt):
+    """
+    Execute a DuckDB SQL statement using the system shell command.
 
-        Example:
-        shell_commd('''SELECT * FROM my_table''')
+    Parameters:
+    stmt (str): The SQL statement to execute.
 
-        This function collapses all whitespace in the SQL statement into single spaces
-        and then executes it using the DuckDB command-line interface.
-        """
-        # Collapse all whitespace (including newlines) into single spaces
-        cleaned_stmt = " ".join(stmt.split())
-        get_ipython().system(f'duckdb mydatabase.duckdb -c "{cleaned_stmt}"')
+    Example:
+    shell_commd('''SELECT * FROM my_table''')
+
+    This function collapses all whitespace in the SQL statement into single spaces
+    and then executes it using the DuckDB command-line interface.
+    """
+    # Collapse all whitespace (including newlines) into single spaces
+    cleaned_stmt = " ".join(stmt.split())
+    get_ipython().system(f'duckdb ../databases/mydatabase.duckdb -c "{cleaned_stmt}"')
