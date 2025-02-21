@@ -102,3 +102,6 @@ def convert_2rawSQL(relation):
     formatted_sql = sqlparse.format(relation2, reindent=True)
 
     print(formatted_sql)
+
+    def shell_commd(stmt: str):
+        get_ipython().system(f'duckdb mydatabase.duckdb -c "{stmt}"')
