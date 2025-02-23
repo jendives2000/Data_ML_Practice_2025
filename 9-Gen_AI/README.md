@@ -14,7 +14,7 @@ This is part of the ML Pro bootcamp I started in September 2024.
 
 ## **Tech stack**:
 - streamlit
-- OpenAI API
+- OpenAI API & FastAPI
 - langchain v0.3 
 - Python v3.12.8
 - VsCode, Jupyter
