@@ -120,3 +120,9 @@ def shell_commd(stmt):
     # Collapse all whitespace (including newlines) into single spaces
     cleaned_stmt = " ".join(stmt.split())
     get_ipython().system(f'duckdb ../databases/mydatabase.duckdb -c "{cleaned_stmt}"')
+
+
+def table_fromCSV(table_name: str, csv_file: str):
+    shell_commd(
+        f"create or replace table {table_name} as select * from read_csv('../data/data_in/{csv_file}')"
+    )
