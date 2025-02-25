@@ -1,10 +1,3 @@
-wine_id,wine_name,sub_class_of
-1,French wine,
-2,Red,1
-3,White,1
-4,White Bordeaux,3
-5,Mission Haut Blanc,4
-6,Haut Brion Blanc,4
-7,Red Bordeaux,2
-8,Latour,7
-9,Rothschild,7
+version https://git-lfs.github.com/spec/v1
+oid sha256:8e022eecf9b0cb6c128c5b88e730baac5439ef8da3d7cd0d52b24de4da845e8c
+size 169

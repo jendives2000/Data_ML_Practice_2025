@@ -1,11 +1,3 @@
-﻿skier_first_name,skier_last_name,skier_age,skier_height,skier_helmet_color,skier_bib_color
-Alice,Smith,12,152,red,black
-Bob,Blaese,16,178,blue,yellow
-Carol,Wilson,32,159,yellow,pink
-Dan,Jones,52,182,red,yellow
-Erin,Taylor,22,168,black,green
-Frank,Williams,18,187,yellow,red
-Grace,Miller,24,172,pink,black
-Heidi,Johnson,22,178,yellow,yellow
-Ivan,Brown,21,185,green,pink
-Judy,Moore,27,160,red,black
+version https://git-lfs.github.com/spec/v1
+oid sha256:5c2bd7313c6b8cff1dd185b0ec0fc421df79ad6e4da601a6aad55e5955be0cdf
+size 399
