@@ -126,3 +126,28 @@ def table_fromCSV(table_name: str, csv_file: str):
     shell_commd(
         f"create or replace table {table_name} as select * from read_csv('../data/data_in/{csv_file}')"
     )
+
+
+# refactored logic to create ENUM with an RO:
+def create_enum(col, db, enum_name):
+    """
+    Create an ENUM type in DuckDB from unique values in a specified column.
+
+    Parameters:
+    col (str): The column name to extract unique values from.
+    db (str): The name of the DuckDB relation (table).
+    enum_name (str): The name of the ENUM type to be created.
+    """
+    # extracting the unique values from the specified column
+    col_forEnum = duckdb.sql(
+        f"""
+        select distinct {col}
+        from {db}
+        """
+    ).fetchall()
+
+    # Build a comma-separated list of ENUM values
+    col_enum_val = ", ".join(f"'{v[0]}'" for v in col_forEnum)
+
+    # create the ENUM type
+    duckdb.sql(f"create type {enum_name} as enum ({col_enum_val});")
