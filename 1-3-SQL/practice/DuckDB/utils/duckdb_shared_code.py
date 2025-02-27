@@ -151,3 +151,17 @@ def create_enum(col, db, enum_name):
 
     # create the ENUM type
     duckdb.sql(f"create type {enum_name} as enum ({col_enum_val});")
+
+
+# refactoring the code to turn a variable into a pandas dataframe:
+def var_to_df(var):
+    """
+    Convert a SQL result set to a pandas DataFrame.
+
+    Parameters:
+    var (sql.run.resultset.ResultSet): The SQL result set to convert.
+
+    Returns:
+    pandas.DataFrame: The converted pandas DataFrame.
+    """
+    return var.DataFrame()
