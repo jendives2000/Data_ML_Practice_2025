@@ -165,3 +165,24 @@ def var_to_df(var):
     pandas.DataFrame: The converted pandas DataFrame.
     """
     return var.DataFrame()
+
+
+import plotly.express as px
+import plotly.io as pio
+
+
+def init_plotly_template():
+    my_plot_1 = dict(
+        layout=dict(
+            title_font_size=35,
+            title_font_color="white",
+            font=dict(size=25, color="white"),
+            plot_bgcolor="black",
+            paper_bgcolor="black",
+            xaxis=dict(tickangle=-45, tickfont=dict(color="grey")),
+        )
+    )
+    # Register your custom template with Plotly
+    pio.templates["BlackBG_Yellow2Grey_font"] = my_plot_1
+    # Set it as the default for all new figures
+    pio.templates.default = "BlackBG_Yellow2Grey_font"
