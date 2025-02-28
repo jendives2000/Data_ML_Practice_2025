@@ -172,14 +172,15 @@ import plotly.io as pio
 
 
 def init_plotly_template():
+    mycolor = "rgb(160, 160, 160)"
     my_plot_1 = dict(
         layout=dict(
             title_font_size=35,
-            title_font_color="white",
-            font=dict(size=25, color="white"),
+            title_font_color=mycolor,  # Grey in RGB
+            font=dict(size=25, color=mycolor),  # Grey in RGB
             plot_bgcolor="black",
             paper_bgcolor="black",
-            xaxis=dict(tickangle=-45, tickfont=dict(color="grey")),
+            xaxis=dict(tickangle=-45, tickfont=dict(color=mycolor)),  # Grey in RGB
         )
     )
     # Register your custom template with Plotly
