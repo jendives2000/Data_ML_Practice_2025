@@ -1,3 +1,5 @@
+import os
+
 import dash
 import plotly.graph_objects as go
 from dash import dcc, html
@@ -18,5 +20,5 @@ app.layout = html.Div(
 
 # Run the app when executed
 if __name__ == "__main__":
-    # Run on host 0.0.0.0 so it's externally accessible, on port 8050 (or any port required by your hosting)
-    app.run_server(debug=False, host="0.0.0.0", port=8050)
+    port = int(os.environ.get("PORT", 8050))  # Use Render's PORT
+    app.run_server(debug=False, host="0.0.0.0", port=port)
