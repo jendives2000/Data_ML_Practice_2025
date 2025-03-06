@@ -1,5 +1,6 @@
-# import A
-from actors import Enemy, Player
+import random  # import B
+
+from actors import Enemy, Player  # import A
 
 
 # G-I
@@ -25,8 +26,24 @@ def play():
     enemies = [Enemy("Bear", 1), Enemy("Wurm", 1)]
     player = Player("Jace", 1)
 
-    print(enemies)
-    print(player)
+    # G-Ic
+    while True:
+        next_enemy = random.choice(enemies)
+        cmd = input(f"You see a {next_enemy.kind}.\n[r]un, [a]ttack, [p]ass?")
+
+        if cmd == "r":
+            print(f"\n{player.name} runs away!")
+        elif cmd == "a":
+            print(f"\n{player.name} swings at {next_enemy.kind}!")
+        elif cmd == "p":
+            print(f"\npassing... Plan your next move!")
+        # G-Id
+        else:
+            print("\nPlease choose a valid option")
+
+        print()
+        print("*" * 40)
+        print()
 
 
 if __name__ == "__main__":
