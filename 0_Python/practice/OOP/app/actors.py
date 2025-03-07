@@ -15,6 +15,20 @@ class Player:
     def get_attack_power(self):
         return randint(1, 100) * self.level
 
+    # I-2
+    def is_attacking(self, enemy):
+        damage = self.get_attack_power()
+        enemy_damage = enemy.get_attack_power()
+
+        print(f"You dealt {damage}.")
+        print(f"{enemy.kind} dealt {enemy_damage}!")
+
+        if damage >= enemy_damage:
+            print(f"You are victorious!")
+            return True
+        else:
+            print(f"No...! {enemy.kind} defeated you!")
+
 
 # II
 class Enemy:

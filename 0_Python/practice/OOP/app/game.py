@@ -35,6 +35,13 @@ def play():
             print(f"\n{player.name} runs away!")
         elif cmd == "a":
             print(f"\n{player.name} swings at {next_enemy.kind}!")
+
+            # G-Ie
+            if player.is_attacking(next_enemy):
+                enemies.remove(next_enemy)
+            else:
+                print(f"{player.name} hides to plan the next move")
+
         elif cmd == "p":
             print(f"\npassing... Plan your next move!")
         # G-Id
@@ -44,6 +51,11 @@ def play():
         print()
         print("*" * 40)
         print()
+
+        # G-J
+        if not enemies:
+            print("You defeated all the enemies!\n\tCONGRATULATIONS!!!")
+            break
 
 
 if __name__ == "__main__":
