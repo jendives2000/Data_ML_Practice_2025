@@ -1,3 +1,4 @@
+import time
 from random import randint
 
 
@@ -20,14 +21,17 @@ class Player:
         damage = self.get_attack_power()
         enemy_damage = enemy.get_attack_power()
 
-        print(f"You dealt {damage}.")
-        print(f"{enemy.kind} dealt {enemy_damage}!")
+        print(f"You dealt {damage} damage 💥.")
+        time.sleep(1)
+        print(f"{enemy.kind} dealt {enemy_damage} damage! 🩹")
+        time.sleep(1.5)
 
         if damage >= enemy_damage:
-            print(f"You are victorious!")
+            print(f"\n\tYou are victorious! 💪\n\n")
             return True
         else:
-            print(f"No...! {enemy.kind} defeated you!")
+            time.sleep(1)
+            print(f"\tNo...! {enemy.kind} defeated you! 💔\n\n")
 
 
 # II

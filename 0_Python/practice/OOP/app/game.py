@@ -1,4 +1,6 @@
+import os
 import random  # import B
+import time
 
 from actors import Enemy, Player  # import A
 
@@ -11,6 +13,8 @@ class Game:
 
     # G-I
     def main(self):
+        # k-a
+        os.system("cls" if os.name == "nt" else "clear")
         self.print_intro()
         self.play()
 
@@ -20,63 +24,70 @@ class Game:
             """
         ==== Magic The Quickening ====
         A Super Duper Fast 1 Combat Text Game!
-        
-            [Press Enter to Continue]
         """
         )
+        time.sleep(1)
+        print(f"\n\t[Press Enter to Continue]\n\n")
         input()
+        # J-a
+        time.sleep(0.5)
+
+    # I-e
+    def print_linebreaks(self):
+        print()
+        print("✨" * 30)
+        print()
 
     # I-c
     def play(self):
         while True:
+            time.sleep(0.5)
             next_enemy = random.choice(self.enemies)
-            print(f"\nEncountering: {next_enemy}")
-            break
 
+            # I-d
+            cmd = input(f"⚠️  You see a {next_enemy.kind}.\n[r]un, [a]ttack, [p]ass?")
+            if cmd == "r":
+                time.sleep(0.5)
+                print(f"\n{self.player.name} runs away!\n{'💨 '*6}\n\n")
+                time.sleep(1)
+            elif cmd == "a":
+                time.sleep(0.5)
+                print(
+                    f"\n{self.player.name} swings at {next_enemy.kind}!\n{'⚔️  '*6}\n\n"
+                )
+                time.sleep(1)
 
-# G-Ib
-def play():
-    enemies = [Enemy("Bear", 1), Enemy("Wurm", 1)]
-    player = Player("Jace", 1)
-
-    # G-Ic
-    while True:
-        next_enemy = random.choice(enemies)
-        cmd = input(f"You see a {next_enemy.kind}.\n[r]un, [a]ttack, [p]ass?")
-
-        if cmd == "r":
-            print(f"\n{player.name} runs away!")
-        elif cmd == "a":
-            print(f"\n{player.name} swings at {next_enemy.kind}!")
-
-            # G-Ie
-            if player.is_attacking(next_enemy):
-                enemies.remove(next_enemy)
+                if self.player.is_attacking(next_enemy):
+                    self.enemies.remove(next_enemy)
+                    time.sleep(1)
+                else:
+                    time.sleep(0.5)
+                    print(f"{self.player.name} hides to plan the next move ✨\n\n")
+                    time.sleep(1)
+            elif cmd == "p":
+                time.sleep(0.5)
+                print(f"\npassing... Plan your next move!\n{'♟️  '*6}\n\n")
+                time.sleep(1)
             else:
-                print(f"{player.name} hides to plan the next move")
+                print("\n❌ Please choose a valid option")
+                time.sleep(0.5)
 
-        elif cmd == "p":
-            print(f"\npassing... Plan your next move!")
-        # G-Id
-        else:
-            print("\nPlease choose a valid option")
+            # I-j
+            # self.print_linebreaks()
 
-        print()
-        print("*" * 40)
-        print()
-
-        # G-J
-        if not enemies:
-            print("You defeated all the enemies!\n\tCONGRATULATIONS!!!")
-            break
+            if not self.enemies:
+                time.sleep(0.5)
+                print(f"You defeated all the enemies!\n")
+                time.sleep(0.5)
+                print(f"\tCONGRATULATIONS!!!\n")
+                print(f"\t{'🎉' * 9}\n\n")
+                time.sleep(2)
+                # k-a
+                os.system("cls" if os.name == "nt" else "clear")
+                break
 
 
 if __name__ == "__main__":
-    # main()
     player = Player(name="Gideon", level=1)
     enemies = [Enemy("Dragon", 1), Enemy("Soldier", 1)]
-    game = Game(player, enemies)
-    print(f"\n{game}\n")
-    # print(f"{game.player}\n")
-    # print(f"{game.enemies}\n")
-    game.main()
+    Game(player, enemies).main()
