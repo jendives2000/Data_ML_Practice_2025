@@ -3,22 +3,35 @@ import random  # import B
 from actors import Enemy, Player  # import A
 
 
-# G-I
-def main():
-    print_intro()
-    play()
+# I-a
+class Game:
+    def __init__(self, player, enemies) -> None:
+        self.player = player
+        self.enemies = enemies
 
+    # G-I
+    def main(self):
+        self.print_intro()
+        self.play()
 
-def print_intro():
-    print(
+    # I-b
+    def print_intro(self):
+        print(
+            """
+        ==== Magic The Quickening ====
+        A Super Duper Fast 1 Combat Text Game!
+        
+            [Press Enter to Continue]
         """
-    ==== Magic The Quickening ====
-    A Super Duper Fast 1 Combat Text Game!
-    
-        [Press Enter to Continue]
-    """
-    )
-    input()
+        )
+        input()
+
+    # I-c
+    def play(self):
+        while True:
+            next_enemy = random.choice(self.enemies)
+            print(f"\nEncountering: {next_enemy}")
+            break
 
 
 # G-Ib
@@ -59,4 +72,11 @@ def play():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    player = Player(name="Gideon", level=1)
+    enemies = [Enemy("Dragon", 1), Enemy("Soldier", 1)]
+    game = Game(player, enemies)
+    print(f"\n{game}\n")
+    # print(f"{game.player}\n")
+    # print(f"{game.enemies}\n")
+    game.main()
