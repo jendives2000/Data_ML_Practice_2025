@@ -4,12 +4,16 @@ from random import randint
 
 # Z-a
 class Character:
-    def __init__(self, name, level) -> None:
+    def __init__(self, name, level, hp) -> None:
         self.name = name
         self.level = level
+        self.hp = 100 * self.level
 
     def __repr__(self):
-        return f"<Character: {self.name}, level: {self.level}>"
+        return f"<Character: {self.name}, level: {self.level}, HP: {self.hp}>"
+
+    def is_alive(self):
+        return self.hp > 0
 
     def get_attack_power(self):
         return randint(1, 100) * self.level
@@ -21,29 +25,39 @@ class Character:
 # I
 class Player(Character):
 
+    # Z-b
+    def __init__(self, name, level) -> None:
+        super().__init__(name, level, 100)
+        self.hp = self.hp + 20
+
+    # Z-c
+    def heal(self):
+        self.hp += self.level * randint(10, 25)
+
     # I-2
     def is_attacking(self, enemy):
         damage = self.get_attack_power()
-        enemy_damage = enemy.get_attack_power()
-
-        print(f"You dealt {damage} damage 💥.")
+        print(f"{self.name} dealt {damage} damage 💥 to {enemy.name} the {enemy.kind}.")
         time.sleep(1)
-        print(f"{enemy.kind} dealt {enemy_damage} damage! 🩹")
+        enemy.hp -= damage
+        print(f"Your enemy now has {enemy.hp}HP ❤️!")
         time.sleep(1.5)
-
-        if damage >= enemy_damage:
-            print(f"\n\tYou are victorious! 💪\n\n")
-            return True
-        else:
-            time.sleep(1)
-            print(f"\tNo...! {enemy.kind} defeated you! 💔\n\n")
 
 
 # II
 class Enemy(Character):
     def __init__(self, name, level, kind) -> None:
-        super().__init__(name, level)
+        super().__init__(name, level, 100)
         self.kind = kind
+
+    # I-3
+    def is_attacking(self, player):
+        damage = self.get_attack_power()
+        print(f"{self.name} the {self.kind} dealt {damage} damage 💥 to {player.name}.")
+        time.sleep(0.5)
+        player.hp -= damage
+        print(f"You are down to {player.hp}HP ❤️!")
+        time.sleep(1)
 
 
 # II-1

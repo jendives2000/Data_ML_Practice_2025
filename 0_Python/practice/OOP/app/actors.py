@@ -4,16 +4,12 @@ from random import randint
 
 # Z-a
 class Character:
-    def __init__(self, name, level, hp) -> None:
+    def __init__(self, name, level) -> None:
         self.name = name
         self.level = level
-        self.hp = 120 * self.level
 
     def __repr__(self):
         return f"<Character: {self.name}, level: {self.level}>"
-
-    def is_alive(self):
-        return self.hp > 0
 
     def get_attack_power(self):
         return randint(1, 100) * self.level
@@ -58,7 +54,6 @@ class Dragon(Enemy):
 
     def get_attack_power(self):
         return randint(20, 50) * (self.size * self.level)
-
 
 class Soldier(Enemy):
     def __init__(self, name, level, size) -> None:
