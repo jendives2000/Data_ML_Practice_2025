@@ -64,6 +64,8 @@ class Game:
                 )
 
                 if cmd == "a":
+                    # Z-6
+                    os.system("cls" if os.name == "nt" else "clear")
                     self.player.is_attacking(next_enemy)
                     if not next_enemy.is_alive():
                         self.enemies.remove(next_enemy)
@@ -151,7 +153,7 @@ class Game:
             print(f"\t{'🎉' * 9}\n\n")
             time.sleep(2)
             # k-a
-            # os.system("cls" if os.name == "nt" else "clear")
+            os.system("cls" if os.name == "nt" else "clear")
 
 
 if __name__ == "__main__":

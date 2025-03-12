@@ -37,10 +37,12 @@ class Player(Character):
     # I-2
     def is_attacking(self, enemy):
         damage = self.get_attack_power()
-        print(f"{self.name} dealt {damage} damage 💥 to {enemy.name} the {enemy.kind}.")
+        print(
+            f"\n\n{self.name} dealt {damage} damage 💥 to {enemy.name} the {enemy.kind}."
+        )
         time.sleep(1)
         enemy.hp -= damage
-        print(f"Your enemy now has {enemy.hp}HP ❤️!")
+        print(f"\n\tYour enemy now has {enemy.hp}HP ❤️!\n")
         time.sleep(1.5)
 
 
@@ -53,10 +55,12 @@ class Enemy(Character):
     # I-3
     def is_attacking(self, player):
         damage = self.get_attack_power()
-        print(f"{self.name} the {self.kind} dealt {damage} damage 💥 to {player.name}.")
+        print(
+            f"\n\n{self.name} the {self.kind} dealt {damage} damage 💥 to {player.name}."
+        )
         time.sleep(0.5)
         player.hp -= damage
-        print(f"You are down to {player.hp}HP ❤️!")
+        print(f"\n\tYou are down to {player.hp}HP ❤️!\n")
         time.sleep(1)
 
 
