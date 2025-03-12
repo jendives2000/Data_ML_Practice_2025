@@ -60,7 +60,7 @@ class Enemy(Character):
         )
         time.sleep(0.5)
         player.hp -= damage
-        print(f"\n\tYou are down to {player.hp}HP ❤️!\n")
+        print(f"\n\tYou are down to {player.hp}HP 💕!\n")
         time.sleep(1)
 
 
