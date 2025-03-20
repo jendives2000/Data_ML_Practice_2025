@@ -45,6 +45,13 @@ def fetch_player_summaries(steam_ids):
     # Print API call stats
     print(f"✅ API calls made: {api_calls}, calls left: {API_CALL_LIMIT - api_calls}")
 
+    # Stop execution when reaching a multiple of 1850
+    if api_calls % 1850 == 0:
+        print(
+            f"\n\n🚨 1850 calls reached.\n\tStopping before Short-Term Limit is reached.\n"
+        )
+        exit()  # Stop the script immediately
+
     if response.status_code == 200:
         players = response.json().get("response", {}).get("players", [])
         return [

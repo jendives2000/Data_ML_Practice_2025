@@ -4,8 +4,8 @@ from pathlib import Path
 
 import dotenv
 import duckdb
-import numpy as np
 import pandas as pd
+import numpy as np
 import requests
 from dotenv import load_dotenv
 from shared_code_2 import (
