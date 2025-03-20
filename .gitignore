@@ -125,3 +125,6 @@ cython_debug/
 
 # Ignore DuckDB CLI binary
 duckdb.exe
+
+# Ignore sensible CSV file: 
+1-1_AI_methodology/models_development/steam_players/data_in/public_profiles.csv
