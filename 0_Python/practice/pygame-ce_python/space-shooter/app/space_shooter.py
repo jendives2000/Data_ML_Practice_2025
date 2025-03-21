@@ -45,7 +45,7 @@ player_surf = pygame.image.load(
 ).convert_alpha()
 player_rect = player_surf.get_frect(center=(HALF_WW, HALF_WH * 1.8))
 # direction: 1 means left & right is possible, 0 means up & down is impossible
-player_direction = pygame.math.Vector2(1, 0)
+player_direction = pygame.math.Vector2()
 player_speed = 300
 
 # Star asset
@@ -77,6 +77,19 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        # if event.type == pygame.KEYDOWN and event.type == pygame.K_1:
+        #     print(1)
+        # if event.type == pygame.MOUSEMOTION:
+        #     player_rect.center = event.pos
+
+    # input
+    keys = pygame.key.get_pressed()
+    player_direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+    player_direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+    # making diagonal moves same speed as horizontal/vertical moves
+    player_direction = player_direction.normalize() if player_direction else player_direction
+    # movement:
+    player_rect.center += player_direction * player_speed * dt
 
     # draw the game, first at the bottom, last on top of all
     display_surface.fill("grey12")
@@ -87,8 +100,7 @@ while running:
     display_surface.blit(meteor_surf, meteor_rect)
     # laser_surf:
     display_surface.blit(laser_surf, laser_rect)
-    # bouncing player from RIGHT side to LEFT:
-    player_rect.center += player_direction * player_speed * dt
+
     # player_surf:
     display_surface.blit(player_surf, player_rect)
 
