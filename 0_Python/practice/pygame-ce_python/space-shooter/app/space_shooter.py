@@ -40,6 +40,7 @@ x = 100
 player_surf = pygame.image.load(
     asset_path("space-shooter/images/player.png")
 ).convert_alpha()
+player_rect = player_surf.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
 
 # importing star asset:
 star_surf = pygame.image.load(
@@ -61,7 +62,7 @@ while running:
     for pos in star_positions:
         display_surface.blit(star_surf, pos)
     # surface own position relative to origin (top left corner):
-    display_surface.blit(player_surf, (x, 150))
+    display_surface.blit(player_surf, player_rect)
 
     pygame.display.update()
 
