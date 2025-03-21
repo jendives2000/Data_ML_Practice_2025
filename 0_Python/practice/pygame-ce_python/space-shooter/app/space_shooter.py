@@ -31,6 +31,7 @@ HALF_WW, HALF_WH = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
 display_surface = pygame.display.set_caption("Speed Asteroids")
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 running = True
+clock = pygame.time.Clock()
 
 # plain surface, own dimensions
 surf = pygame.Surface((100, 200))
@@ -43,7 +44,8 @@ player_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "player.png"))
 ).convert_alpha()
 player_rect = player_surf.get_frect(center=(HALF_WW, HALF_WH * 1.8))
-player_direction = 1
+player_direction = pygame.math.Vector2(2, -1)
+player_speed = 10
 
 # Star asset
 star_surf = pygame.image.load(
@@ -67,6 +69,7 @@ laser_rect = laser_surf.get_frect(bottomleft=(20, WINDOW_HEIGHT - 20))
 
 # ===== GAME LOOP =====
 while running:
+    clock.tick(10)
     # event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -82,9 +85,7 @@ while running:
     # laser_surf:
     display_surface.blit(laser_surf, laser_rect)
     # bouncing player from RIGHT side to LEFT:
-    player_rect.x += player_direction * 0.4
-    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
-        player_direction *= -1
+    player_rect.center += player_direction * player_speed
     # player_surf:
     display_surface.blit(player_surf, player_rect)
 
