@@ -27,6 +27,7 @@ from shared_code_pyg import asset_path
 # ===== general setup =====
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+HALF_WW, HALF_WH = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
 display_surface = pygame.display.set_caption("Speed Asteroids")
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 running = True
@@ -36,20 +37,35 @@ surf = pygame.Surface((100, 200))
 surf.fill("white")
 x = 100
 
-# importing the player graph asset:
+# ===== IMPORTING ASSETS =====
+# player graph asset:
 player_surf = pygame.image.load(
-    asset_path("space-shooter/images/player.png")
+    asset_path(os.path.join("space-shooter", "images", "player.png"))
 ).convert_alpha()
-player_rect = player_surf.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+player_rect = player_surf.get_frect(center=(HALF_WW, HALF_WH * 1.8))
+player_direction = 1
 
-# importing star asset:
+# Star asset
 star_surf = pygame.image.load(
-    asset_path("space-shooter/images/star.png")
+    asset_path(os.path.join("space-shooter", "images", "star.png"))
 ).convert_alpha()
 star_positions = [
     (randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)) for _ in range(20)
 ]
 
+# Meteor:
+meteor_surf = pygame.image.load(
+    asset_path(os.path.join("space-shooter", "images", "meteor.png"))
+).convert_alpha()
+meteor_rect = meteor_surf.get_frect(center=(HALF_WW, HALF_WH))
+
+laser_surf = pygame.image.load(
+    asset_path(os.path.join("space-shooter", "images", "laser.png"))
+).convert_alpha()
+laser_rect = laser_surf.get_frect(bottomleft=(20, WINDOW_HEIGHT - 20))
+
+
+# ===== GAME LOOP =====
 while running:
     # event loop
     for event in pygame.event.get():
@@ -61,7 +77,15 @@ while running:
     # placing 20 stars randomly:
     for pos in star_positions:
         display_surface.blit(star_surf, pos)
-    # surface own position relative to origin (top left corner):
+    # meteor_surf:
+    display_surface.blit(meteor_surf, meteor_rect)
+    # laser_surf:
+    display_surface.blit(laser_surf, laser_rect)
+    # bouncing player from RIGHT side to LEFT:
+    player_rect.x += player_direction * 0.4
+    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
+        player_direction *= -1
+    # player_surf:
     display_surface.blit(player_surf, player_rect)
 
     pygame.display.update()
