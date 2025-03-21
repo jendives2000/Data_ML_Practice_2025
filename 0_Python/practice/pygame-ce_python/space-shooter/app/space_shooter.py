@@ -44,8 +44,9 @@ player_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "player.png"))
 ).convert_alpha()
 player_rect = player_surf.get_frect(center=(HALF_WW, HALF_WH * 1.8))
-player_direction = pygame.math.Vector2(2, -1)
-player_speed = 10
+# direction: 1 means left & right is possible, 0 means up & down is impossible
+player_direction = pygame.math.Vector2(1, 0)
+player_speed = 300
 
 # Star asset
 star_surf = pygame.image.load(
@@ -69,7 +70,9 @@ laser_rect = laser_surf.get_frect(bottomleft=(20, WINDOW_HEIGHT - 20))
 
 # ===== GAME LOOP =====
 while running:
-    clock.tick(10)
+    # delta time in seconds:
+    dt = clock.tick() / 1000
+
     # event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -85,7 +88,7 @@ while running:
     # laser_surf:
     display_surface.blit(laser_surf, laser_rect)
     # bouncing player from RIGHT side to LEFT:
-    player_rect.center += player_direction * player_speed
+    player_rect.center += player_direction * player_speed * dt
     # player_surf:
     display_surface.blit(player_surf, player_rect)
 
