@@ -1,6 +1,6 @@
 import os
 import sys
-from random import randint
+from random import randint, uniform
 
 import pygame
 
@@ -99,9 +99,11 @@ class Meteor(pygame.sprite.Sprite):
         self.rect = self.image.get_frect(center=meteor_pos)
         self.timer = pygame.time.get_ticks()
         self.lifetime = 3000
+        self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
+        self.speed = randint(400, 500)
 
     def update(self, dt):
-        self.rect.centery += 400 * dt
+        self.rect.center += self.direction * self.speed * dt
         if pygame.time.get_ticks() - self.timer >= self.lifetime:
             self.kill()
 
