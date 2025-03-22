@@ -87,6 +87,10 @@ class Laser(pygame.sprite.Sprite):
         # make the laser move upward
         self.rect.centery -= 400 * dt
 
+        # kill the laser instance once it's out screen:
+        if self.rect.bottom < 0:
+            self.kill()
+
 
 # ===== general setup =====
 pygame.init()
