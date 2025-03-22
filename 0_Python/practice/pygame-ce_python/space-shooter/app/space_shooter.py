@@ -114,7 +114,7 @@ def collisions():
     # collisions player/meteor, dokill is on meteor_sprites not player:
     collision_1 = pygame.sprite.spritecollide(player, meteor_sprites, dokill=True)
     if collision_1:
-        running = False 
+        running = False
     # collision laser / meteor:
     for laser in laser_sprites:
         collided_sprites = pygame.sprite.spritecollide(
@@ -122,6 +122,25 @@ def collisions():
         )
         if collided_sprites:
             laser.kill()
+
+
+color = (230, 230, 230)
+
+
+def display_score():
+    current_time = pygame.time.get_ticks()
+    text_surf: pygame.Surface = font.render(
+        text=str(current_time), antialias=True, color=color
+    )
+    text_rect = text_surf.get_frect(midbottom=(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50))
+    display_surface.blit(text_surf, text_rect)
+    pygame.draw.rect(
+        display_surface,
+        color=color,
+        rect=text_rect.inflate(20, 10).move(0, -8),
+        border_radius=10,
+        width=5,
+    )
 
 
 # ===== GENERAL SETUP =====
@@ -146,6 +165,10 @@ meteor_surf = pygame.image.load(
 laser_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "laser.png"))
 ).convert_alpha()
+# Font for text:
+font = pygame.font.Font(
+    asset_path(os.path.join("space-shooter", "images", "Oxanium-Bold.ttf")), size=40
+)
 
 # Sprites
 all_sprites = pygame.sprite.Group()
@@ -160,7 +183,7 @@ player = Player(all_sprites)
 # custom events -> meteor event
 meteor_spawn = pygame.event.custom_type()
 # smaller the time, the more spawns
-pygame.time.set_timer(meteor_spawn, 50)
+pygame.time.set_timer(meteor_spawn, 500)
 
 # ===== GAME LOOP =====
 while running:
@@ -180,9 +203,9 @@ while running:
     collisions()
 
     # draw the game, first at the bottom, last on top of all
-    display_surface.fill("grey12")
-
+    display_surface.fill("grey16")
     all_sprites.draw(display_surface)
+    display_score()
 
     pygame.display.update()
 
