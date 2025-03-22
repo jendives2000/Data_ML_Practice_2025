@@ -41,6 +41,9 @@ class Player(pygame.sprite.Sprite):
         self.laser_shoot_delay = 0
         self.laser_cooldown = 400
 
+        # mask:
+        self.mask = pygame.mask.from_surface(self.image)
+
     def laser_timer(self):
         if not self.can_shoot:
             current_time = pygame.time.get_ticks()
@@ -82,6 +85,7 @@ class Laser(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = laser_itself
         self.rect = self.image.get_frect(midbottom=laser_pos)
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self, dt):
         # make the laser move upward
@@ -101,6 +105,7 @@ class Meteor(pygame.sprite.Sprite):
         self.lifetime = 3000
         self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
         self.speed = randint(400, 500)
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self, dt):
         self.rect.center += self.direction * self.speed * dt
@@ -112,7 +117,9 @@ def collisions():
     global running
 
     # collisions player/meteor, dokill is on meteor_sprites not player:
-    collision_1 = pygame.sprite.spritecollide(player, meteor_sprites, dokill=True)
+    collision_1 = pygame.sprite.spritecollide(
+        player, meteor_sprites, dokill=True, collided=pygame.sprite.collide_mask
+    )
     if collision_1:
         running = False
     # collision laser / meteor:
