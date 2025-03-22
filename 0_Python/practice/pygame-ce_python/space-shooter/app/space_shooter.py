@@ -36,6 +36,17 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 300
 
+        # cooldown
+        self.can_shoot = True
+        self.laser_shoot_delay = 0
+        self.laser_cooldown = 400
+
+    def laser_timer(self):
+        if not self.can_shoot:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.laser_shoot_delay >= self.laser_cooldown
+                self.can_shoot = True
+    
     def update(self, dt):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
@@ -48,8 +59,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.center += self.direction * self.speed * dt
 
         recent_keys = pygame.key.get_just_pressed()
-        if recent_keys[pygame.K_SPACE]:
+        if recent_keys[pygame.K_SPACE] and self.can_shoot:
             print("fire laser")
+            self.can_shoot = False
 
 
 class Star(pygame.sprite.Sprite):
@@ -85,7 +97,6 @@ for i in range(25):
 player = Player(all_sprites)
 
 # ===== IMPORTING ASSETS =====
-
 # Meteor:
 meteor_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "meteor.png"))
@@ -97,6 +108,9 @@ laser_surf = pygame.image.load(
 ).convert_alpha()
 laser_rect = laser_surf.get_frect(bottomleft=(20, WINDOW_HEIGHT - 20))
 
+# custom events -> meteor event
+meteor_spawn = pygame.event.custom_type()
+pygame.time.set_timer(meteor_spawn, 500)
 
 # ===== GAME LOOP =====
 while running:
@@ -107,7 +121,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event == meteor_spawn:
+            print("create meteor")
 
+    # update
     all_sprites.update(dt)
 
     # draw the game, first at the bottom, last on top of all
