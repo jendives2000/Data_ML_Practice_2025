@@ -108,6 +108,22 @@ class Meteor(pygame.sprite.Sprite):
             self.kill()
 
 
+def collisions():
+    global running
+
+    # collisions player/meteor, dokill is on meteor_sprites not player:
+    collision_1 = pygame.sprite.spritecollide(player, meteor_sprites, dokill=True)
+    if collision_1:
+        running = False 
+    # collision laser / meteor:
+    for laser in laser_sprites:
+        collided_sprites = pygame.sprite.spritecollide(
+            laser, meteor_sprites, dokill=True
+        )
+        if collided_sprites:
+            laser.kill()
+
+
 # ===== GENERAL SETUP =====
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
@@ -161,13 +177,7 @@ while running:
 
     # update
     all_sprites.update(dt)
-    # collisions player/meteor, dokill is on meteor_sprites not player:
-    collision_1 = pygame.sprite.spritecollide(player, meteor_sprites, dokill=True)
-    if collision_1:
-        print(collision_1[0])
-    # collision laser / meteor:
-    for laser in laser_sprites:
-        pygame.sprite.spritecollide(laser, meteor_sprites, dokill=True)
+    collisions()
 
     # draw the game, first at the bottom, last on top of all
     display_surface.fill("grey12")
