@@ -44,9 +44,9 @@ class Player(pygame.sprite.Sprite):
     def laser_timer(self):
         if not self.can_shoot:
             current_time = pygame.time.get_ticks()
-            if current_time - self.laser_shoot_delay >= self.laser_cooldown
+            if current_time - self.laser_shoot_delay >= self.laser_cooldown:
                 self.can_shoot = True
-    
+
     def update(self, dt):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
@@ -60,8 +60,12 @@ class Player(pygame.sprite.Sprite):
 
         recent_keys = pygame.key.get_just_pressed()
         if recent_keys[pygame.K_SPACE] and self.can_shoot:
+            Laser(laser_surf, self.rect.midtop, all_sprites)
             print("fire laser")
             self.can_shoot = False
+            self.laser_shoot_delay = pygame.time.get_ticks()
+
+        self.laser_timer()
 
 
 class Star(pygame.sprite.Sprite):
@@ -71,6 +75,17 @@ class Star(pygame.sprite.Sprite):
         self.rect = self.image.get_frect(
             center=(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT))
         )
+
+
+class Laser(pygame.sprite.Sprite):
+    def __init__(self, laser_itself, laser_pos, groups):
+        super().__init__(groups)
+        self.image = laser_itself
+        self.rect = self.image.get_frect(midbottom=laser_pos)
+
+    def update(self, dt):
+        # make the laser move upward
+        self.rect.centery -= 400 * dt
 
 
 # ===== general setup =====
@@ -88,15 +103,17 @@ surf.fill("white")
 x = 100
 
 all_sprites = pygame.sprite.Group()
-# instantiating 25 stars
+
+# ===== IMPORTING ASSETS =====
+# import one Star...
 star_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "star.png"))
 ).convert_alpha()
+# use it 25 times
 for i in range(25):
     Star(all_sprites, star_surf)
 player = Player(all_sprites)
 
-# ===== IMPORTING ASSETS =====
 # Meteor:
 meteor_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "meteor.png"))
@@ -106,7 +123,6 @@ meteor_rect = meteor_surf.get_frect(center=(HALF_WW, HALF_WH))
 laser_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "laser.png"))
 ).convert_alpha()
-laser_rect = laser_surf.get_frect(bottomleft=(20, WINDOW_HEIGHT - 20))
 
 # custom events -> meteor event
 meteor_spawn = pygame.event.custom_type()
