@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 300
 
-    def update(self):
+    def update(self, dt):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
         self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
@@ -46,6 +46,21 @@ class Player(pygame.sprite.Sprite):
         )
         # movement:
         self.rect.center += self.direction * self.speed * dt
+
+        recent_keys = pygame.key.get_just_pressed()
+        if recent_keys[pygame.K_SPACE]:
+            print("fire laser")
+
+
+class Star(pygame.sprite.Sprite):
+    def __init__(self, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(
+            asset_path(os.path.join("space-shooter", "images", "star.png"))
+        ).convert_alpha()
+        self.rect = self.image.get_frect(
+            center=(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT))
+        )
 
 
 # ===== general setup =====
@@ -64,23 +79,11 @@ x = 100
 
 all_sprites = pygame.sprite.Group()
 player = Player(all_sprites)
+# instantiating 25 stars
+for i in range(25):
+    Star(all_sprites)
 
 # ===== IMPORTING ASSETS =====
-# player graph asset:
-# player_surf = pygame.image.load(
-#     asset_path(os.path.join("space-shooter", "images", "player.png"))
-# ).convert_alpha()
-# player_rect = player_surf.get_frect(center=(HALF_WW, HALF_WH * 1.8))
-# # direction: 1 means left & right is possible, 0 means up & down is impossible
-
-
-# Star asset
-star_surf = pygame.image.load(
-    asset_path(os.path.join("space-shooter", "images", "star.png"))
-).convert_alpha()
-star_positions = [
-    (randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)) for _ in range(20)
-]
 
 # Meteor:
 meteor_surf = pygame.image.load(
@@ -104,17 +107,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    all_sprites.update()
+    all_sprites.update(dt)
 
     # draw the game, first at the bottom, last on top of all
     display_surface.fill("grey12")
-    # placing 20 stars randomly:
-    for pos in star_positions:
-        display_surface.blit(star_surf, pos)
+
     # meteor_surf:
-    display_surface.blit(meteor_surf, meteor_rect)
+    # display_surface.blit(meteor_surf, meteor_rect)
     # laser_surf:
-    display_surface.blit(laser_surf, laser_rect)
+    # display_surface.blit(laser_surf, laser_rect)
     all_sprites.draw(display_surface)
 
     pygame.display.update()
