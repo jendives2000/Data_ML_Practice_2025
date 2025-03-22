@@ -53,11 +53,9 @@ class Player(pygame.sprite.Sprite):
 
 
 class Star(pygame.sprite.Sprite):
-    def __init__(self, groups):
+    def __init__(self, groups, surf):
         super().__init__(groups)
-        self.image = pygame.image.load(
-            asset_path(os.path.join("space-shooter", "images", "star.png"))
-        ).convert_alpha()
+        self.image = surf
         self.rect = self.image.get_frect(
             center=(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT))
         )
@@ -78,10 +76,13 @@ surf.fill("white")
 x = 100
 
 all_sprites = pygame.sprite.Group()
-player = Player(all_sprites)
 # instantiating 25 stars
+star_surf = pygame.image.load(
+    asset_path(os.path.join("space-shooter", "images", "star.png"))
+).convert_alpha()
 for i in range(25):
-    Star(all_sprites)
+    Star(all_sprites, star_surf)
+player = Player(all_sprites)
 
 # ===== IMPORTING ASSETS =====
 
