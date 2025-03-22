@@ -27,8 +27,8 @@ from shared_code_pyg import asset_path
 
 # ===== CLASSES WITH SPRITES =====
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, groups):
+        super().__init__(groups)
         self.image = pygame.image.load(
             asset_path(os.path.join("space-shooter", "images", "player.png"))
         ).convert_alpha()
@@ -49,7 +49,8 @@ surf = pygame.Surface((100, 200))
 surf.fill("white")
 x = 100
 
-player = Player()
+all_sprites = pygame.sprite.Group()
+player = Player(all_sprites)
 
 # ===== IMPORTING ASSETS =====
 # player graph asset:
@@ -118,7 +119,7 @@ while running:
 
     # player_surf:
     # display_surface.blit(player_surf, player_rect)
-    display_surface.blit(player.image, player.rect)
+    all_sprites.draw(display_surface)
 
     pygame.display.update()
 
