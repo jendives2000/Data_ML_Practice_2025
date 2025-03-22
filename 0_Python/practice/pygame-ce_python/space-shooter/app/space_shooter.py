@@ -92,7 +92,21 @@ class Laser(pygame.sprite.Sprite):
             self.kill()
 
 
-# ===== general setup =====
+class Meteor(pygame.sprite.Sprite):
+    def __init__(self, meteor_itself, meteor_pos, groups):
+        super().__init__(groups)
+        self.image = meteor_itself
+        self.rect = self.image.get_frect(center=meteor_pos)
+        self.timer = pygame.time.get_ticks()
+        self.lifetime = 3000
+
+    def update(self, dt):
+        self.rect.centery += 400 * dt
+        if pygame.time.get_ticks() - self.timer >= self.lifetime:
+            self.kill()
+
+
+# ===== GENERAL SETUP =====
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 HALF_WW, HALF_WH = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
@@ -101,32 +115,27 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 running = True
 clock = pygame.time.Clock()
 
-# plain surface, own dimensions
-surf = pygame.Surface((100, 200))
-surf.fill("white")
-x = 100
-
-all_sprites = pygame.sprite.Group()
-
 # ===== IMPORTING ASSETS =====
 # import one Star...
 star_surf = pygame.image.load(
     asset_path(os.path.join("space-shooter", "images", "star.png"))
 ).convert_alpha()
+# Meteor:
+meteor_surf = pygame.image.load(
+    asset_path(os.path.join("space-shooter", "images", "meteor.png"))
+).convert_alpha()
+# Laser:
+laser_surf = pygame.image.load(
+    asset_path(os.path.join("space-shooter", "images", "laser.png"))
+).convert_alpha()
+
+# Sprites
+all_sprites = pygame.sprite.Group()
 # use it 25 times
 for i in range(25):
     Star(all_sprites, star_surf)
 player = Player(all_sprites)
 
-# Meteor:
-meteor_surf = pygame.image.load(
-    asset_path(os.path.join("space-shooter", "images", "meteor.png"))
-).convert_alpha()
-meteor_rect = meteor_surf.get_frect(center=(HALF_WW, HALF_WH))
-
-laser_surf = pygame.image.load(
-    asset_path(os.path.join("space-shooter", "images", "laser.png"))
-).convert_alpha()
 
 # custom events -> meteor event
 meteor_spawn = pygame.event.custom_type()
@@ -141,8 +150,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event == meteor_spawn:
-            print("create meteor")
+        if event.type == meteor_spawn:
+            x, y = randint(0, WINDOW_WIDTH), randint(-200, -100)
+            Meteor(meteor_surf, (x, y), all_sprites)
 
     # update
     all_sprites.update(dt)
