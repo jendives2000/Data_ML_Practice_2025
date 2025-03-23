@@ -106,7 +106,7 @@ class Meteor(pygame.sprite.Sprite):
         self.lifetime = 3000
         self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
         self.speed = randint(400, 500)
-        self.rotation_speed = randint(20, 50)
+        self.rotation_speed = randint(40, 80)
         self.rotation = 0
 
     def update(self, dt):
@@ -119,6 +119,26 @@ class Meteor(pygame.sprite.Sprite):
         self.image = pygame.transform.rotozoom(
             self.original_surf, self.rotation, scale=1
         )
+        self.rect = self.image.get_frect(center=self.rect.center)
+
+
+class AnimatedExplosion(pygame.sprite.Sprite):
+    def __init__(self, frames, pos, groups):
+        super().__init__(groups)
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_frect(center=pos)
+
+    def update(self, dt):
+        self.frame_index += 20 * dt  # results in float, so needs int wrapper
+        # continuous explosions
+        # self.image = self.frames[int(self.frame_index) % len(self.frames)]
+        # explosions just once:
+        if self.frame_index < len(self.frames):
+            self.image = self.frames[int(self.frame_index)]
+        else:
+            self.kill()
 
 
 def collisions():
@@ -137,6 +157,8 @@ def collisions():
         )
         if collided_sprites:
             laser.kill()
+            # instance of class object explosions:
+            AnimatedExplosion(explosion_frames, laser.rect.midtop, all_sprites)
 
 
 color = (230, 230, 230)
@@ -184,6 +206,13 @@ laser_surf = pygame.image.load(
 font = pygame.font.Font(
     asset_path(os.path.join("space-shooter", "images", "Oxanium-Bold.ttf")), size=40
 )
+# explosion frames:
+explosion_frames = [
+    pygame.image.load(
+        asset_path(os.path.join("space-shooter", "images", "explosions", f"{i}.png"))
+    ).convert_alpha()
+    for i in range(21)
+]
 
 # Sprites
 all_sprites = pygame.sprite.Group()
