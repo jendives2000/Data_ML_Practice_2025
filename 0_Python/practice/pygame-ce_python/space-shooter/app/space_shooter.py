@@ -40,7 +40,7 @@ class Player(pygame.sprite.Sprite):
         # cooldown
         self.can_shoot = True
         self.laser_shoot_delay = 0
-        self.laser_cooldown = 400
+        self.laser_cooldown = 280
 
         # mask:
         mask = pygame.mask.from_surface(self.image)
@@ -202,6 +202,48 @@ def display_score(score_count):
     )
 
 
+def display_instructions():
+    instruction_text = (
+        "========== MOVE ==========\n\n"
+        "LEFT, RIGHT, UP, DOWN\n\n"
+        "========== SHOT ==========\n\n"
+        "SPACEBAR"
+    )
+
+    # Load font with emoji support (fallback to default if needed)
+    font = pygame.font.SysFont("Agency FB", 32)  # Windows
+    # font = pygame.font.SysFont("Noto Color Emoji", 32)  # Linux
+
+    # Render multiline text (pygame doesn't support it natively)
+    lines = instruction_text.split("\n")
+    surfaces = [font.render(line, True, (200, 200, 200)) for line in lines]
+
+    # Compute total height
+    total_height = sum(s.get_height() for s in surfaces)
+    max_width = max(s.get_width() for s in surfaces)
+
+    # Create the rect
+    padding = 25
+    box_rect = pygame.Rect(0, 0, max_width + padding * 2, total_height + padding * 2)
+    box_rect.center = (HALF_WW, HALF_WH)
+
+    # Draw the border rectangle
+    pygame.draw.rect(
+        display_surface,
+        color=(200, 200, 200),
+        rect=box_rect,
+        border_radius=3,
+        width=5,
+    )
+
+    # Blit each line with vertical spacing
+    y_offset = box_rect.top + padding
+    for surf in surfaces:
+        line_rect = surf.get_rect(centerx=box_rect.centerx, top=y_offset)
+        display_surface.blit(surf, line_rect)
+        y_offset += surf.get_height()
+
+
 # ===== GENERAL SETUP =====
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
@@ -240,19 +282,19 @@ explosion_frames = [
 laser_wav = pygame.mixer.Sound(
     asset_path(os.path.join("space-shooter", "audio", "laser.wav"))
 )
-laser_wav.set_volume(0.25)
+laser_wav.set_volume(0.20)
 explosion_wav = pygame.mixer.Sound(
     asset_path(os.path.join("space-shooter", "audio", "explosion.wav"))
 )
-explosion_wav.set_volume(0.35)
+explosion_wav.set_volume(0.22)
 damage_wav = pygame.mixer.Sound(
     asset_path(os.path.join("space-shooter", "audio", "damage.ogg"))
 )
 game_music_wav = pygame.mixer.Sound(
     asset_path(os.path.join("space-shooter", "audio", "Speed_Asteroids.mp3"))
 )
-game_music_wav.set_volume(0.35)
-game_music_wav.play(loops=-1)
+game_music_wav.set_volume(0.42)
+
 
 # Sprites
 all_sprites = pygame.sprite.Group()
@@ -265,14 +307,42 @@ player = Player(all_sprites)
 
 
 # custom events -> meteor event
+spawn_interval = 300
+thresholds = [23000, 59000, 127000, 158000, 229000]
 meteor_spawn = pygame.event.custom_type()
 # smaller the time, the more spawns
-pygame.time.set_timer(meteor_spawn, 500)
+pygame.time.set_timer(meteor_spawn, spawn_interval)
+
+
+# ===== INSTRUCTIONS DISPLAY =====
+# Display instructions for 5 seconds before starting the game
+instructions_duration = 5000  # milliseconds
+start_time = pygame.time.get_ticks()
+
+while True:
+    current_time = pygame.time.get_ticks()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    # Fill the screen and display the instructions
+    display_surface.fill("black")
+    display_instructions()
+    pygame.display.update()
+
+    # Break out after 5 seconds
+    if current_time - start_time >= instructions_duration:
+        break
+
+game_music_wav.play(loops=-1)
 
 # ===== GAME LOOP =====
 while running:
     # delta time in seconds:
     dt = clock.tick() / 1000
+    current_time = pygame.time.get_ticks()  # elapsed time in ms
 
     # event loop
     for event in pygame.event.get():
@@ -281,6 +351,14 @@ while running:
         if event.type == meteor_spawn:
             x, y = randint(250, WINDOW_WIDTH - 250), randint(-200, -100)
             Meteor(meteor_surf, (x, y), (all_sprites, meteor_sprites))
+
+    # Check if it's time to increase the spawn interval
+    if current_time == thresholds[0]:
+        # Increase interval by 30%
+        spawn_interval = int(spawn_interval * 1.3)
+        pygame.time.set_timer(meteor_spawn, spawn_interval)
+        # Remove the threshold we just passed so that thresholds[0] becomes the next threshold
+        thresholds.pop(0)
 
     # update
     all_sprites.update(dt)
