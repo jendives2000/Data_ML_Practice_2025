@@ -105,9 +105,9 @@ class Meteor(pygame.sprite.Sprite):
         self.rect = self.image.get_frect(center=meteor_pos)
         self.timer = pygame.time.get_ticks()
         self.lifetime = 3000
-        self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
-        self.speed = randint(400, 500)
-        self.rotation_speed = randint(40, 80)
+        self.direction = pygame.Vector2(uniform(-0.4, 0.4), 1)
+        self.speed = randint(300, 550)
+        self.rotation_speed = randint(-110, 110)
         self.rotation = 0
 
     def update(self, dt):
@@ -279,7 +279,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == meteor_spawn:
-            x, y = randint(0, WINDOW_WIDTH), randint(-200, -100)
+            x, y = randint(250, WINDOW_WIDTH - 250), randint(-200, -100)
             Meteor(meteor_surf, (x, y), (all_sprites, meteor_sprites))
 
     # update
