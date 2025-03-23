@@ -145,40 +145,31 @@ class SpeedCapsule(pygame.sprite.Sprite):
     def __init__(self, pos, *groups):
         super().__init__(*groups)
         text = "Speed"
-        font = pygame.font.Font(
-            None, 16
-        )  # You can swap None with a font name if desired
+        font = pygame.font.Font(None, 16)
         text_surf = font.render(text, True, "yellow")
-
-        # Padding: 5 pixels on each side (so inflate by 10,10)
         padding = 5
-        # Get a rect for the text and then inflate it for padding.
         frame_rect = text_surf.get_rect().inflate(padding * 2, padding * 2)
-
-        # Create a new surface with per-pixel alpha for the capsule (so the background can be transparent)
         self.image = pygame.Surface(frame_rect.size, pygame.SRCALPHA)
-
-        # Draw a rounded rectangle frame on the new surface.
-        # Here, border_radius gives very round corners.
         pygame.draw.rect(
             self.image,
-            "yellow",  # frame color
+            "yellow",
             self.image.get_rect(),
-            width=2,  # border width
-            border_radius=frame_rect.height
-            // 2,  # half the height for very round corners
+            width=2,
+            border_radius=frame_rect.height // 2,
         )
-
-        # Blit the text surface onto the new surface, centering it.
         text_rect = text_surf.get_rect(center=self.image.get_rect().center)
         self.image.blit(text_surf, text_rect)
+
         self.rect = self.image.get_rect(center=pos)
-        self.speed = 285  # pixels per second
+        # Store the position as a float using a Vector2.
+        self.pos = pygame.math.Vector2(self.rect.center)
+        self.speed = 170  # pixels per second
 
     def update(self, dt):
-        print(f"Capsule Y: {self.rect.centery}")  # Debug
-        self.rect.centery += self.speed * dt
-        # Remove if it goes off-screen
+        # Update the float position
+        self.pos.y += self.speed * dt
+        # Update the rect using the float position
+        self.rect.centery = int(self.pos.y)
         if self.rect.top > WINDOW_HEIGHT:
             self.kill()
 
@@ -216,6 +207,7 @@ def collisions():
     if capsule_hits:
         # Increase the player's speed by 50 each time a capsule is collected.
         player.speed += 50
+        speedup_wav.play()
 
 
 color = (230, 230, 230)
@@ -257,7 +249,8 @@ def display_instructions():
         "========== MOVE ==========\n\n"
         "LEFT, RIGHT, UP, DOWN\n\n"
         "========== SHOT ==========\n\n"
-        "SPACEBAR"
+        "SPACEBAR\n\n"
+        "ENTER or ESC to skip"
     )
 
     # Load font with emoji support (fallback to default if needed)
@@ -292,19 +285,6 @@ def display_instructions():
         line_rect = surf.get_rect(centerx=box_rect.centerx, top=y_offset)
         display_surface.blit(surf, line_rect)
         y_offset += surf.get_height()
-
-
-def speed_capsule():
-    speed_text = "Speed"
-    speed_font = pygame.font.Font(None, 12)  # Default font with size 12
-    speed_surf = speed_font.render(speed_text, True, "yellow")
-    speed_rect = speed_surf.get_rect(midbottom=(350, 75))
-    # Move downward at speed 200
-    speed_rect.centery += 200 * dt
-
-    # Randomly display (20% chance) after score_count increment
-    if randint(1, 100) <= 40:
-        display_surface.blit(speed_surf, speed_rect)
 
 
 # ===== GENERAL SETUP =====
@@ -357,6 +337,10 @@ game_music_wav = pygame.mixer.Sound(
     asset_path(os.path.join("space-shooter", "audio", "Speed_Asteroids.mp3"))
 )
 game_music_wav.set_volume(0.42)
+speedup_wav = pygame.mixer.Sound(
+    asset_path(os.path.join("space-shooter", "audio", "speedup.wav"))
+)
+speedup_wav.set_volume(0.3)
 
 
 # Sprites
@@ -391,6 +375,11 @@ while True:
             pygame.quit()
             sys.exit()
 
+        if event.type == pygame.KEYDOWN:
+            if event.key in (pygame.K_RETURN, pygame.K_ESCAPE):
+                # Skip the intro if Enter or Esc is pressed
+                break
+
     # Fill the screen and display the instructions
     display_surface.fill("black")
     display_instructions()
@@ -401,6 +390,9 @@ while True:
         break
 
 game_music_wav.play(loops=-1)
+
+# Enable input after intro
+pygame.event.set_allowed(None)
 
 # ===== GAME LOOP =====
 while running:
