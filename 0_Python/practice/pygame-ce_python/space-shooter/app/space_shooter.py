@@ -142,8 +142,11 @@ class AnimatedExplosion(pygame.sprite.Sprite):
             self.kill()
 
 
+score_count = 0
+
+
 def collisions():
-    global running
+    global running, score_count
 
     # collisions player/meteor, dokill is on meteor_sprites not player:
     collision_1 = pygame.sprite.spritecollide(
@@ -162,21 +165,37 @@ def collisions():
             AnimatedExplosion(explosion_frames, laser.rect.midtop, all_sprites)
             # explosion sound:
             explosion_wav.play()
+            score_count += 1
 
 
 color = (230, 230, 230)
 
 
-def display_score():
+def display_playtime():
     current_time = pygame.time.get_ticks()
     text_surf: pygame.Surface = font.render(
         text=str(current_time), antialias=True, color=color
     )
-    text_rect = text_surf.get_frect(midbottom=(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50))
+    text_rect = text_surf.get_frect(midbottom=(75, 75))
     display_surface.blit(text_surf, text_rect)
     pygame.draw.rect(
         display_surface,
         color=color,
+        rect=text_rect.inflate(20, 10).move(0, -8),
+        border_radius=10,
+        width=5,
+    )
+
+
+def display_score(score_count):
+    text_surf: pygame.Surface = font.render(
+        text=str(score_count), antialias=True, color="green"
+    )
+    text_rect = text_surf.get_frect(midbottom=(210, 75))
+    display_surface.blit(text_surf, text_rect)
+    pygame.draw.rect(
+        display_surface,
+        color="green",
         rect=text_rect.inflate(20, 10).move(0, -8),
         border_radius=10,
         width=5,
@@ -230,9 +249,9 @@ damage_wav = pygame.mixer.Sound(
     asset_path(os.path.join("space-shooter", "audio", "damage.ogg"))
 )
 game_music_wav = pygame.mixer.Sound(
-    asset_path(os.path.join("space-shooter", "audio", "game_music.wav"))
+    asset_path(os.path.join("space-shooter", "audio", "Speed_Asteroids.mp3"))
 )
-game_music_wav.set_volume(0.2)
+game_music_wav.set_volume(0.35)
 game_music_wav.play(loops=-1)
 
 # Sprites
@@ -270,7 +289,8 @@ while running:
     # draw the game, first at the bottom, last on top of all
     display_surface.fill("grey16")
     all_sprites.draw(display_surface)
-    display_score()
+    display_playtime()
+    display_score(score_count)
 
     pygame.display.update()
 
