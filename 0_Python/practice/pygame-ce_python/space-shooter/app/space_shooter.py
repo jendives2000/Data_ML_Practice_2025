@@ -68,6 +68,7 @@ class Player(pygame.sprite.Sprite):
             print("fire laser")
             self.can_shoot = False
             self.laser_shoot_delay = pygame.time.get_ticks()
+            laser_wav.play()
 
         self.laser_timer()
 
@@ -159,6 +160,8 @@ def collisions():
             laser.kill()
             # instance of class object explosions:
             AnimatedExplosion(explosion_frames, laser.rect.midtop, all_sprites)
+            # explosion sound:
+            explosion_wav.play()
 
 
 color = (230, 230, 230)
@@ -213,6 +216,24 @@ explosion_frames = [
     ).convert_alpha()
     for i in range(21)
 ]
+
+# sounds:
+laser_wav = pygame.mixer.Sound(
+    asset_path(os.path.join("space-shooter", "audio", "laser.wav"))
+)
+laser_wav.set_volume(0.25)
+explosion_wav = pygame.mixer.Sound(
+    asset_path(os.path.join("space-shooter", "audio", "explosion.wav"))
+)
+explosion_wav.set_volume(0.35)
+damage_wav = pygame.mixer.Sound(
+    asset_path(os.path.join("space-shooter", "audio", "damage.ogg"))
+)
+game_music_wav = pygame.mixer.Sound(
+    asset_path(os.path.join("space-shooter", "audio", "game_music.wav"))
+)
+game_music_wav.set_volume(0.2)
+game_music_wav.play(loops=-1)
 
 # Sprites
 all_sprites = pygame.sprite.Group()
