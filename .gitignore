@@ -122,7 +122,7 @@ cython_debug/
 
 # Ignore zip files
 *.zip
-!0_Python/practice/pygame-ce_python/build/space_shooter/release/SpeedAsteroidsInstaller.zip
+!0_Python/practice/pygame-ce_python/release/SpeedAsteroidsInstaller.zip
 
 # Ignore DuckDB CLI binary
 duckdb.exe
