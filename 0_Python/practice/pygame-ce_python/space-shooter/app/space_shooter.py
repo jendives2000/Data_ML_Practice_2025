@@ -208,8 +208,14 @@ def collisions():
             explosion_wav.play()
             score_count += 1
             # 20% chance to spawn a capsule at the explosion location
-            if randint(1, 100) <= 20:
+            if randint(1, 100) <= 5:
                 SpeedCapsule(laser.rect.midtop, all_sprites, capsule_sprites)
+
+    # Collision: player/capsule (increase player speed)
+    capsule_hits = pygame.sprite.spritecollide(player, capsule_sprites, dokill=True)
+    if capsule_hits:
+        # Increase the player's speed by 50 each time a capsule is collected.
+        player.speed += 50
 
 
 color = (230, 230, 230)
