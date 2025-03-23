@@ -122,9 +122,30 @@ cython_debug/
 
 # Ignore zip files
 *.zip
+!0_Python/practice/pygame-ce_python/build/space_shooter/release/SpeedAsteroidsInstaller.zip
 
 # Ignore DuckDB CLI binary
 duckdb.exe
 
 # Ignore sensible CSV file: 
 1-1_AI_methodology/models_development/steam_players/data_in/public_profiles.csv
+
+0_Python/practice/pygame-ce_python/build
+0_Python/practice/pygame-ce_python/dist
+*.spec
+
+# Ignore PyInstaller and Inno Setup artifacts
+build/
+dist/
+*.spec
+*.log
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.exe
+*.bak
+
+# Ignore temp folders
+*.tmp
+*.~*

@@ -19,6 +19,7 @@ I followed a tutorial for most of the part, while I also consulted the pygame do
 
 Making games in pygame demands good python skills among which the following are fundamental: 
 - Object Oriented Programming principles: Abstraction, Polymorphism, Encapsulation and Inheritance
+- Code structure
 - Dictionaries and lists
 - and of course all the rest: functions and other libraries
 
