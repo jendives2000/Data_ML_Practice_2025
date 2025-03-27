@@ -34,7 +34,7 @@ class GameView(arcade.Window):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
 
         for x in range(0, 1250, 64):
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", scale=0.5)
             wall.center_x = x
             wall.center_y = 32
             self.wall_list.append(wall)
@@ -42,7 +42,7 @@ class GameView(arcade.Window):
         coordinate_list = [[512, 96], [256, 96], [768, 96]]
         for coordinate in coordinate_list:
             wall = arcade.Sprite(
-                "resources:images/tiles/boxCrate_double.png", scale=0.5
+                ":resources:images/tiles/boxCrate_double.png", scale=0.5
             )
             wall.position = coordinate
             self.wall_list.append(wall)
@@ -73,6 +73,7 @@ class GameView(arcade.Window):
         arcade.draw_sprite(self.player_sprite)
 
         self.player_list.draw()
+        self.wall_list.draw()
 
 
 def main():
