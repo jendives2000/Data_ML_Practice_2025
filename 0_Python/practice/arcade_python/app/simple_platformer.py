@@ -20,6 +20,23 @@ class GameView(arcade.Window):
         # Call the parent class to set up the window
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
 
+        self.player_texture = None
+        self.player_sprite = None
+        self.player_list = None
+
+        self.wall_list = None
+
+    def on_resize(self, width, height):
+        """This method is automatically called when the window is resized."""
+
+        # Call the parent. Failing to do this will mess up the coordinates,
+        # and default to 0,0 at the center and the edges being -1 to 1.
+        super().on_resize(width, height)
+
+        print(f"Window resized to: {width}, {height}")
+
+    def setup(self):
+        """Set up the game here. Call this function to restart the game."""
         self.background_color = arcade.csscolor.DODGER_BLUE
 
         # === PLAYER ===
@@ -56,19 +73,6 @@ class GameView(arcade.Window):
             self.player_sprite, walls=self.wall_list, gravity_constant=GRAVITY
         )
 
-    def on_resize(self, width, height):
-        """This method is automatically called when the window is resized."""
-
-        # Call the parent. Failing to do this will mess up the coordinates,
-        # and default to 0,0 at the center and the edges being -1 to 1.
-        super().on_resize(width, height)
-
-        print(f"Window resized to: {width}, {height}")
-
-    def setup(self):
-        """Set up the game here. Call this function to restart the game."""
-        pass
-
     def on_draw(self):
         """Render the screen."""
 
@@ -100,6 +104,9 @@ class GameView(arcade.Window):
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+
+        if key == arcade.key.ESCAPE:
+            self.setup()
 
     # STOPPING TRIGGERING MOVEMENTS
     def on_key_release(self, key, modifiers):
