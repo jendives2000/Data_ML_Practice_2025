@@ -3,8 +3,11 @@ import arcade
 # Constants
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
-WINDOW_TITLE = "Jumpy Doo"
+WINDOW_TITLE = "Jumpy Yay!"
+TILE_SCALING = 0.5
+GRAVITY = 1
 PLAYER_MOVEMENT_SPEED = 5
+PLAYER_JUMP_SPEED = 20
 
 
 class GameView(arcade.Window):
@@ -43,14 +46,14 @@ class GameView(arcade.Window):
         coordinate_list = [[512, 96], [256, 96], [768, 96]]
         for coordinate in coordinate_list:
             wall = arcade.Sprite(
-                ":resources:images/tiles/boxCrate_double.png", scale=0.5
+                ":resources:images/tiles/boxCrate_double.png", scale=TILE_SCALING
             )
             wall.position = coordinate
             self.wall_list.append(wall)
 
         # === PHYSICS ENGINE ===
-        self.physics_engine = arcade.PhysicsEngineSimple(
-            self.player_sprite, self.wall_list
+        self.physics_engine = arcade.PhysicsEnginePlatformer(
+            self.player_sprite, walls=self.wall_list, gravity_constant=GRAVITY
         )
 
     def on_resize(self, width, height):
@@ -91,9 +94,8 @@ class GameView(arcade.Window):
         """Called whenever a key is pressed."""
 
         if key == arcade.key.UP or key == arcade.key.W:
-            self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
+            if self.physics_engine.can_jump():
+                self.player_sprite.change_y = PLAYER_JUMP_SPEED
         elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
