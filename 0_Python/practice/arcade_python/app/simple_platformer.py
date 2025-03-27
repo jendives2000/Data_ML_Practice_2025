@@ -4,6 +4,7 @@ import arcade
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 WINDOW_TITLE = "Jumpy Doo"
+PLAYER_MOVEMENT_SPEED = 5
 
 
 class GameView(arcade.Window):
@@ -47,6 +48,11 @@ class GameView(arcade.Window):
             wall.position = coordinate
             self.wall_list.append(wall)
 
+        # === PHYSICS ENGINE ===
+        self.physics_engine = arcade.PhysicsEngineSimple(
+            self.player_sprite, self.wall_list
+        )
+
     def on_resize(self, width, height):
         """This method is automatically called when the window is resized."""
 
@@ -74,6 +80,37 @@ class GameView(arcade.Window):
 
         self.player_list.draw()
         self.wall_list.draw()
+
+    def on_update(self, delta_time):
+        """Movement and Game Logic"""
+
+        self.physics_engine.update()
+
+    # TRIGGERING MOVEMENTS
+    def on_key_press(self, key, modifiers):
+        """Called whenever a key is pressed."""
+
+        if key == arcade.key.UP or key == arcade.key.W:
+            self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
+        elif key == arcade.key.DOWN or key == arcade.key.S:
+            self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
+        elif key == arcade.key.LEFT or key == arcade.key.A:
+            self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
+            self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+
+    # STOPPING TRIGGERING MOVEMENTS
+    def on_key_release(self, key, modifiers):
+        """Called whenever a key is released."""
+
+        if key == arcade.key.UP or key == arcade.key.W:
+            self.player_sprite.change_y = 0
+        elif key == arcade.key.DOWN or key == arcade.key.S:
+            self.player_sprite.change_y = 0
+        elif key == arcade.key.LEFT or key == arcade.key.A:
+            self.player_sprite.change_x = 0
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
+            self.player_sprite.change_x = 0
 
 
 def main():
