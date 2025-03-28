@@ -21,6 +21,9 @@ class GameView(arcade.Window):
         # Call the parent class to set up the window
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
 
+        self.end_of_map = 0
+        self.level = 1
+
         self.scene = None
         self.tile_map = None
 
@@ -53,7 +56,7 @@ class GameView(arcade.Window):
         layer_options = {"Platforms": {"use_spatial_hash": True}}
 
         self.tile_map = arcade.load_tilemap(
-            ":resources:tiled_maps/map2_level_1.json",
+            f":resources:tiled_maps/map2_level_{self.level}.json",
             scaling=TILE_SCALING,
             layer_options=layer_options,
         )
@@ -90,6 +93,10 @@ class GameView(arcade.Window):
         )
 
         self.background_color = arcade.csscolor.DODGER_BLUE
+
+        self.end_of_map = self.tile_map.width * self.tile_map.tile_width
+        self.end_of_map *= self.tile_map.scaling
+        print(self.end_of_map)
 
     def on_draw(self):
         """Render the screen."""
@@ -135,6 +142,13 @@ class GameView(arcade.Window):
             self.player_sprite, self.scene["Don't Touch"]
         ):
             arcade.play_sound(self.gameover_sound)
+            self.setup()
+
+        if self.player_sprite.center_x >= self.end_of_map:
+            # go to next level:
+            self.level += 1
+
+            # reload the game with the new level:
             self.setup()
 
         self.camera.position = self.player_sprite.position
