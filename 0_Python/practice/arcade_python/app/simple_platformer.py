@@ -23,6 +23,7 @@ class GameView(arcade.Window):
         self.player_texture = None
         self.player_sprite = None
         self.player_list = None
+        self.camera = None
 
         self.wall_list = None
 
@@ -73,6 +74,9 @@ class GameView(arcade.Window):
             self.player_sprite, walls=self.wall_list, gravity_constant=GRAVITY
         )
 
+        # === CAMERA ===
+        self.camera = arcade.Camera2D()
+
     def on_draw(self):
         """Render the screen."""
 
@@ -81,6 +85,8 @@ class GameView(arcade.Window):
         # set to. This ensures that you have a clean slate for drawing each
         # frame of the game.
         self.clear()
+
+        self.camera.use()
 
         # Code to draw other things will go here
         arcade.draw_sprite(self.player_sprite)
@@ -92,6 +98,7 @@ class GameView(arcade.Window):
         """Movement and Game Logic"""
 
         self.physics_engine.update()
+        self.camera.position = self.player_sprite.position
 
     # TRIGGERING MOVEMENTS
     def on_key_press(self, key, modifiers):
