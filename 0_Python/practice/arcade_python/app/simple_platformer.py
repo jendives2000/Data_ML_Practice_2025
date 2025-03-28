@@ -36,6 +36,7 @@ class GameView(arcade.Window):
         # === SOUNDS ===
         self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
+        self.gameover_sound = arcade.load_sound(":resources:sounds/gameover1.wav")
 
     def on_resize(self, width, height):
         """This method is automatically called when the window is resized."""
@@ -52,7 +53,7 @@ class GameView(arcade.Window):
         layer_options = {"Platforms": {"use_spatial_hash": True}}
 
         self.tile_map = arcade.load_tilemap(
-            ":resources:tiled_maps/map.json",
+            ":resources:tiled_maps/map2_level_1.json",
             scaling=TILE_SCALING,
             layer_options=layer_options,
         )
@@ -60,6 +61,7 @@ class GameView(arcade.Window):
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
         # === PLAYER ===
+        self.scene.add_sprite_list_after("Player", "Foreground")
         self.player_texture = arcade.load_texture(
             ":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png"
         )
@@ -128,6 +130,12 @@ class GameView(arcade.Window):
             arcade.play_sound(self.collect_coin_sound)
             self.score += 75
             self.score_text.text = f"SCORE: {self.score}"
+
+        if arcade.check_for_collision_with_list(
+            self.player_sprite, self.scene["Don't Touch"]
+        ):
+            arcade.play_sound(self.gameover_sound)
+            self.setup()
 
         self.camera.position = self.player_sprite.position
 
