@@ -35,7 +35,7 @@ Source:
 
   **Other Main Differences**: 
   - **Unified Game Loop via Subclassing arcade.Window**  
-    Improvement (Arcade): Arcade centralizes the game loop and input management using an OOP pattern by subclassing arcade.Window (or arcade.View), which encapsulates on_draw, on_update, and input methods like on_key_press.
+    Arcade centralizes the game loop and input management using an OOP pattern by subclassing arcade.Window (or arcade.View), which encapsulates on_draw, on_update, and input methods like on_key_press.
 
         >> class GameView(arcade.Window):  
               def on_draw(self): ...  
@@ -48,7 +48,7 @@ Source:
     ➡️ Better separation of concerns and cleaner extensibility in Arcade.
 
   - **Built-in Scene Graph (arcade.Scene):**  
-    Improvement (Arcade): Arcade introduces arcade.Scene, which organizes sprite layers (Player, Coins, Platforms, Foreground, etc.).
+    Arcade introduces arcade.Scene, which organizes sprite layers (Player, Coins, Platforms, Foreground, etc.).
 
         >> self.scene = arcade.Scene.from_tilemap(self.tile_map)
            self.scene.add_sprite("Player", self.player_sprite)
@@ -58,8 +58,8 @@ Source:
 
     ➡️ Scene abstraction reduces boilerplate, enforces better layer structure, and scales more easily.
 
-  - **Asset Loading with Virtual Paths ** 
-    Improvement (Arcade): Arcade supports resource aliasing (e.g., :resources:images/...) that makes asset loading easier and platform-independent.
+  - **Asset Loading with Virtual Paths**  
+    Arcade supports resource aliasing (e.g., :resources:images/...) that makes asset loading easier and platform-independent.
 
         >> arcade.load_texture(":resources:images/...")
            arcade.load_tilemap(":resources:tiled_maps/...")
