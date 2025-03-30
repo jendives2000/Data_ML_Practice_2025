@@ -19,7 +19,11 @@ Source:
   
   Arcade is fully object-oriented, making it ideal for practicing real-world programming structures like class inheritance, modular architecture, and event-based logic — all of which translate well to data analysis and machine learning workflows. 
 
-  Mostly, Pygame-ce was heavily dependent on the CPU, which limits graphical possibilities. Arcade here is leveraging the GPU resources. 
+- **Pygame Vs Arcade**:
+  
+  Mostly, Pygame-ce offers full-customization on any aspect of the game, this comes at some costs: more boiler-plate and more verbosity, which require more testings and monitoring of the code. 
+  
+  Pygame-ce is heavily dependent on the CPU, which limits graphical possibilities. Arcade here is leveraging the GPU resources. 
   
   It also includes **built-in tools** for:
   - animations, 
@@ -27,7 +31,49 @@ Source:
   - scene transitions, 
   - and hardware-accelerated rendering,   
   
-  making it easier and faster to build polished 2D games without writing everything from scratch.
+  making it easier and faster to build polished 2D games without writing everything from scratch.  
+
+  **Other Main Differences**: 
+  - **Unified Game Loop via Subclassing arcade.Window**  
+    Improvement (Arcade): Arcade centralizes the game loop and input management using an OOP pattern by subclassing arcade.Window (or arcade.View), which encapsulates on_draw, on_update, and input methods like on_key_press.
+
+        >> class GameView(arcade.Window):  
+              def on_draw(self): ...  
+              def on_update(self, delta_time): ...  
+    
+    - Why it’s better:  
+  
+      In Pygame, the main loop is procedural and scattered. You manage everything manually (while running:), making it harder to modularize or swap game states.
+
+    ➡️ Better separation of concerns and cleaner extensibility in Arcade.
+
+  - **Built-in Scene Graph (arcade.Scene):**  
+    Improvement (Arcade): Arcade introduces arcade.Scene, which organizes sprite layers (Player, Coins, Platforms, Foreground, etc.).
+
+        >> self.scene = arcade.Scene.from_tilemap(self.tile_map)
+           self.scene.add_sprite("Player", self.player_sprite)
+    
+    - Why it’s better:  
+    In Pygame, you manage multiple pygame.sprite.Group() objects manually and have to handle draw order explicitly.
+
+    ➡️ Scene abstraction reduces boilerplate, enforces better layer structure, and scales more easily.
+
+  - **Asset Loading with Virtual Paths ** 
+    Improvement (Arcade): Arcade supports resource aliasing (e.g., :resources:images/...) that makes asset loading easier and platform-independent.
+
+        >> arcade.load_texture(":resources:images/...")
+           arcade.load_tilemap(":resources:tiled_maps/...")
+    
+    - **Why it’s better**:  
+    In Pygame, asset management often requires fragile manual path hacks (os.path.join, sys.path.append, etc.) — especially hard when packaging with PyInstaller.
+
+    ➡️ Arcade's asset paths are clean, relocatable, and don't require custom path utilities.
+  
+  - and several other improvements: 
+    - Tilemap Integration with Tiled
+    - Physics Engine Abstraction
+    - GUI Layer Separation (Camera2D)
+    - Built-in Audio with Clean Syntax
 
 Like the previous Pygame-ce project, this one is also a practice project where I:
 - put to use 
