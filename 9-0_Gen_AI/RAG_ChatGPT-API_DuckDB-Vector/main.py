@@ -43,6 +43,9 @@ movies["page_content"] = (
     "Description: " + movies.movie_description
 )
 
+# limiting movies DF to 2 cols (ensuring dataloader sees them as non-metadata)
+movies = movies[["page_content", "source"]]
+
 movies.head(1)
 print(movies.head().iloc[0].page_content)
 movies.movie_description.isna
