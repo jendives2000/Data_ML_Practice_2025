@@ -18,4 +18,8 @@ movies = movies_raw.rename(
     }
 )
 
+# adding a source column that gives a URL pointing to the movie page:
+movies["source"] = "https://www.imdb.com/title/" + movies["tconst"]
+
+
 movies.head(1)
