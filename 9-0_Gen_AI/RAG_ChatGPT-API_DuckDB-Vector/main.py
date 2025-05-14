@@ -21,5 +21,8 @@ movies = movies_raw.rename(
 # adding a source column that gives a URL pointing to the movie page:
 movies["source"] = "https://www.imdb.com/title/" + movies["tconst"]
 
+# using only the movies type (from col titleType):
+movies = movies[movies["titleType"] == "movie"]
 
 movies.head(1)
+movies.titleType.value_counts
