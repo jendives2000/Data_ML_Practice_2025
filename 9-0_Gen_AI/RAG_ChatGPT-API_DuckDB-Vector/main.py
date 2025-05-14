@@ -44,11 +44,12 @@ movies["page_content"] = (
 )
 
 # limiting movies DF to 2 cols (ensuring dataloader sees them as non-metadata)
-movies = movies[["page_content", "source"]]
+movies_for_loader = movies[["page_content", "source"]]
 
 # loading the data into the langchain document:
-docs = DataFrameLoader(movies, page_content_column="page_content")
+docs = DataFrameLoader(movies_for_loader, page_content_column="page_content").load()
 
 movies.head(1)
 print(movies.head().iloc[0].page_content)
 movies.movie_description.isna
+print(docs[:3])
