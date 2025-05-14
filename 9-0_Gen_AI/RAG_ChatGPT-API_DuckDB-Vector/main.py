@@ -27,5 +27,13 @@ movies = movies[movies["titleType"] == "movie"]
 # replacing N/A in movie_description with "No description"
 movies.movie_description = movies.movie_description.fillna("No description")
 
+# limiting the DF movies to only 4 col: 
+movies = movies[
+    ["movie_title",
+    "movie_description",
+    "source",
+    "genres"]    
+    ]
+
 movies.head(1)
 movies.movie_description.isna
