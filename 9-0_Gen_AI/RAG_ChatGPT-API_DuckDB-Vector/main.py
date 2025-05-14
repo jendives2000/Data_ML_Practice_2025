@@ -24,5 +24,8 @@ movies["source"] = "https://www.imdb.com/title/" + movies["tconst"]
 # using only the movies type (from col titleType):
 movies = movies[movies["titleType"] == "movie"]
 
+# replacing N/A in movie_description with "No description"
+movies.movie_description = movies.movie_description.fillna("No description")
+
 movies.head(1)
-movies.titleType.value_counts
+movies.movie_description.isna
