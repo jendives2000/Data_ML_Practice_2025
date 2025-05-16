@@ -31,7 +31,9 @@ Here are the main steps of the project:
 - testing the vector DB with a question (similarity_search): 
   - What's a good movie about climate change?
   - and checking the answer given
-- Prompt Engineering: chaining well defined and expressed prompts to get the RAG to answer the way we want it to
+- Prompt Engineering: expressing prompts for the RAG to use to answer the way we want it to
+- Creating the RAG (retriever) and trying it with a question (RetrievalQAWithSourcesChain): 
+  - what is a good climate change movie to watch?
 
 
 **NOTES**: 
