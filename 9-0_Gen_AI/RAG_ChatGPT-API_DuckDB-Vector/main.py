@@ -1,4 +1,7 @@
-import os
+import os, sys
+
+# ensure the script’s directory is on the import path
+sys.path.insert(0, os.path.dirname(__file__))
 
 # Vector database: DuckDB
 import duckdb
@@ -11,6 +14,9 @@ import tiktoken
 from langchain.document_loaders import DataFrameLoader
 from langchain_community.vectorstores import DuckDB
 from langchain_openai import OpenAIEmbeddings
+
+# from utils: 
+from utils import count_embeddings
 
 # Checking the OpenAI API key is available
 "OPENAI_API_KEY" in os.environ
@@ -77,7 +83,8 @@ cost = round(ttal_nber_tokens * cost_pertoken, 3)
 conn = duckdb.connect("embeddings.db")
 
 # embedding object:
-embedding = OpenAIEmbeddings(model="text-embedding-3-large")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+
 
 cost
 ttal_nber_tokens
