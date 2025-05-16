@@ -76,6 +76,8 @@ cost = round(ttal_nber_tokens * cost_pertoken, 3)
 # DuckDB Database creation:
 conn = duckdb.connect("embeddings.db")
 
+# embedding object:
+embedding = OpenAIEmbeddings(model="text-embedding-3-large")
 
 cost
 ttal_nber_tokens
