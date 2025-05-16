@@ -27,3 +27,4 @@ Here are the main steps of the project:
 - The dataset was first cleaned and then left with a 4 selected columns
 - Langchain documents were prepped for vectorizing (langchain document)
 - the cost of the embedding was calculated (tokenizer): only 4.9 cents (0.049$)
+- the vector database filling: total of 4963 documents (4 columns describing a movie)

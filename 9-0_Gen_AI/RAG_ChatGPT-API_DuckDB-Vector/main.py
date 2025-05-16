@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 
 # ensure the script’s directory is on the import path
 sys.path.insert(0, os.path.dirname(__file__))
@@ -15,7 +16,7 @@ from langchain.document_loaders import DataFrameLoader
 from langchain_community.vectorstores import DuckDB
 from langchain_openai import OpenAIEmbeddings
 
-# from utils: 
+# from utils:
 from utils import count_embeddings
 
 # Checking the OpenAI API key is available
@@ -85,6 +86,16 @@ conn = duckdb.connect("embeddings.db")
 # embedding object:
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 
+# Vectors counting:
+n_vectors = count_embeddings(conn, "embeddings")
+
+# Fill the vector DB with data from documents:
+if n_vectors > 0:
+    docsearch = DuckDB(embedding=embeddings, connection=conn, table_name="embeddings")
+else:
+    docsearch = DuckDB.from_documents(
+        docs, embeddings, connection=conn, table_name="embeddings"
+    )
 
 cost
 ttal_nber_tokens
