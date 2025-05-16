@@ -28,9 +28,11 @@ Here are the main steps of the project:
 - Langchain documents were prepped for vectorizing (langchain document)
 - the cost of the embedding was calculated (tokenizer): only 4.9 cents (0.049$)
 - the vector database filling: total of 4963 documents (4 columns describing a movie)
-- testing the RAG with a question (similarity_search): 
+- testing the vector DB with a question (similarity_search): 
   - What's a good movie about climate change?
   - and checking the answer given
+- Prompt Engineering: chaining well defined and expressed prompts to get the RAG to answer the way we want it to
+
 
 **NOTES**: 
 The RAG is processing a similarity search, meaning it answers the questions based on similarities found in its vector DB. A question about the quality of a movie, like "What is the best Action movie" will not apply that quality concept to its answer.
