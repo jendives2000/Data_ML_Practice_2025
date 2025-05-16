@@ -10,12 +10,13 @@ import pandas as pd
 
 # openai modules:
 import tiktoken
+from langchain.chains import RetrievalQAWithSourcesChain
 
 # Langchain modules:
 from langchain.document_loaders import DataFrameLoader
 from langchain.prompts import PromptTemplate
 from langchain_community.vectorstores import DuckDB
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 # from utils:
 from utils import count_embeddings
@@ -147,7 +148,22 @@ document_prompt = PromptTemplate.from_template(DOCUMENT_PROMPT)
 question_prompt = PromptTemplate.from_template(QUESTION_PROMPT)
 
 # ==== Chaining ====
+# Create an OpenAI client LLM model:
+llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
+# Create the retrieval object for the bot:
+qa_with_sources = RetrievalQAWithSourcesChain.from_chain_type(
+    chain_type="stuff",
+    chain_type_kwargs={
+        "prompt": question_prompt,
+        "document_prompt": document_prompt,
+    },
+    llm=llm,
+    retriever=docsearch.as_retriever(),
+)
+
+# Retrieving with a question:
+qa_with_sources("what is a good climate change movie to watch?")
 
 cost
 ttal_nber_tokens
