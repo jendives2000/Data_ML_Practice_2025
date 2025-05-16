@@ -62,6 +62,14 @@ nber_tokens_perdoc = [len(encoder.encode(doc.page_content)) for doc in docs]
 
 # Total nber of tokens: 
 ttal_nber_tokens = sum(nber_tokens_perdoc)
+
+# Cost: 
+cost_permillion_token = 0.13
+cost_pertoken = cost_permillion_token / 1_000_000 
+cost = round(ttal_nber_tokens * cost_pertoken, 3)
+
+
+cost
 ttal_nber_tokens
 
 movies.head(1)

@@ -23,4 +23,4 @@ This is a practice project aiming at the creation of a chatbot that can answer q
 Here are the main steps of the project:  
 - The dataset was first cleaned and then left with a 4 selected columns
 - Langchain documents were prepped for vectorizing (langchain document)
-- the cost of the embedding was calculated (tokenizer)
+- the cost of the embedding was calculated (tokenizer): only 4.9 cents (0.049$)
