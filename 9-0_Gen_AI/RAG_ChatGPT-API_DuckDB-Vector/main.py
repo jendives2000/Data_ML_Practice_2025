@@ -1,5 +1,7 @@
 import os
 
+# Vector database: DuckDB
+import duckdb
 import pandas as pd
 
 # openai modules:
@@ -7,9 +9,8 @@ import tiktoken
 
 # Langchain modules:
 from langchain.document_loaders import DataFrameLoader
-
-# Vector database: DuckDB
-import duckdb
+from langchain_community.vectorstores import DuckDB
+from langchain_openai import OpenAIEmbeddings
 
 # Checking the OpenAI API key is available
 "OPENAI_API_KEY" in os.environ
@@ -63,16 +64,16 @@ encoder = tiktoken.encoding_for_model("text-embedding-3-large")
 # list of the number of tokens of each document:
 nber_tokens_perdoc = [len(encoder.encode(doc.page_content)) for doc in docs]
 
-# Total nber of tokens: 
+# Total nber of tokens:
 ttal_nber_tokens = sum(nber_tokens_perdoc)
 
-# Cost: 
+# Cost:
 cost_permillion_token = 0.13
-cost_pertoken = cost_permillion_token / 1_000_000 
+cost_pertoken = cost_permillion_token / 1_000_000
 cost = round(ttal_nber_tokens * cost_pertoken, 3)
 
 # ==== Vector Database Setup: DuckDB ====
-# DuckDB Database creation: 
+# DuckDB Database creation:
 conn = duckdb.connect("embeddings.db")
 
 
