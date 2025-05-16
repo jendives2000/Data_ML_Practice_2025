@@ -20,7 +20,7 @@ This is a practice project aiming at the creation of a chatbot that can answer q
 - LLM: openAI 4o-mini
 - vector embedding: 
   - cost: openAI "text-embedding-3-large" (openAI tiktoken module)
-  - embedding: DuckDB
+  - embedding: DuckDB (~50MB vector DB size)
 - RAG: langchain + Kaggle IMDb dataset
 
 Here are the main steps of the project:  
@@ -28,3 +28,10 @@ Here are the main steps of the project:
 - Langchain documents were prepped for vectorizing (langchain document)
 - the cost of the embedding was calculated (tokenizer): only 4.9 cents (0.049$)
 - the vector database filling: total of 4963 documents (4 columns describing a movie)
+- testing the RAG with a question (similarity_search): 
+  - What's a good movie about climate change?
+  - and checking the answer given
+
+**NOTES**: 
+The RAG is processing a similarity search, meaning it answers the questions based on similarities found in its vector DB. A question about the quality of a movie, like "What is the best Action movie" will not apply that quality concept to its answer.
+However, the LLM is taking over for that part and answers the question a more relevant way. 

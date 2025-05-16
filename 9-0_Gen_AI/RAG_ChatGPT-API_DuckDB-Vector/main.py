@@ -97,6 +97,12 @@ else:
         docs, embeddings, connection=conn, table_name="embeddings"
     )
 
+# ==== Testing the RAG ====
+question = "What's a good movie about climate change?"
+
+# Convert the vector DB to a retriever & target relevant docs to answer a question: 
+docsearch.similarity_search(question, k=1)
+
 cost
 ttal_nber_tokens
 
