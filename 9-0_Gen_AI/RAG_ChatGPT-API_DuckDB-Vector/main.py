@@ -103,14 +103,15 @@ else:
 question = "What’s a the Iron Giant movie?"
 
 # Convert the vector DB to a retriever & target relevant docs to answer a question:
-docsearch.similarity_search(question, k=4)
+docsearch.similarity_search(question, k=3)
 
-# ==== Chaining Prompts ====
+# ==== Prompt Template Setup for RAG ====
 # Prompt Setup:
 DOCUMENT_PROMPT = """{page_content}
 IMDB link: {source}
 =========="""
 
+# The prompt includes an example (made of 3 results, k=3) and an answer that the LLM will take as an example, as a template basically:
 QUESTION_PROMPT = """
 Given the following extracted parts of a movie database and a question, create a final answer with the IMDB link as source ("SOURCE").
 If you don't know the answer, just say that you don't know. Don't try to make up an answer.
@@ -141,9 +142,12 @@ QUESTION: {question}
 {summaries}
 FINAL ANSWER:"""
 
-# Creating the prompt template objects: 
+# Creating the prompt template objects:
 document_prompt = PromptTemplate.from_template(DOCUMENT_PROMPT)
 question_prompt = PromptTemplate.from_template(QUESTION_PROMPT)
+
+# ==== Chaining ====
+
 
 cost
 ttal_nber_tokens
