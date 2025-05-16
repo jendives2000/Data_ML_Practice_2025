@@ -1,4 +1,4 @@
-# **Hands-On Practice Gen AI 🤖: IMDb Chatbot based on RAG + OpenAi API**
+# **Hands-On Practice Gen AI 🤖: IMDb Chatbot based on RAG + OpenAi API + 🦆DuckDB**
 
 ---
 
@@ -17,7 +17,9 @@ Source:
 
 This is a practice project aiming at the creation of a chatbot that can answer questions on movies using the following tech:  
 - LLM: openAI 4o-mini
-- vector embedding: openAI "text-embedding-3-large" (openAI tiktoken module)
+- vector embedding: 
+  - cost: openAI "text-embedding-3-large" (openAI tiktoken module)
+  - embedding: DuckDB
 - RAG: langchain + Kaggle IMDb dataset
 
 Here are the main steps of the project:  
