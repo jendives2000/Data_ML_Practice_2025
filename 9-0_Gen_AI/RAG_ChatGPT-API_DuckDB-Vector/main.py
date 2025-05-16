@@ -8,6 +8,9 @@ import tiktoken
 # Langchain modules:
 from langchain.document_loaders import DataFrameLoader
 
+# Vector database: DuckDB
+import duckdb
+
 # Checking the OpenAI API key is available
 "OPENAI_API_KEY" in os.environ
 
@@ -67,6 +70,10 @@ ttal_nber_tokens = sum(nber_tokens_perdoc)
 cost_permillion_token = 0.13
 cost_pertoken = cost_permillion_token / 1_000_000 
 cost = round(ttal_nber_tokens * cost_pertoken, 3)
+
+# ==== Vector Database Setup: DuckDB ====
+# DuckDB Database creation: 
+conn = duckdb.connect("embeddings.db")
 
 
 cost
