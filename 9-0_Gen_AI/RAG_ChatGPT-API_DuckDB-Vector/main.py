@@ -2,6 +2,9 @@ import os
 
 import pandas as pd
 
+# openai modules:
+import tiktoken
+
 # Langchain modules:
 from langchain.document_loaders import DataFrameLoader
 
@@ -12,6 +15,7 @@ from langchain.document_loaders import DataFrameLoader
 
 # Importing the dataset
 pathIMDBcsv = "/home/jendives/MLpro/Data_ML_Practice_2025/9-0_Gen_AI/RAG_ChatGPT-API_DuckDB-Vector/Data-In/IMDB.csv"
+
 movies_raw = pd.read_csv(pathIMDBcsv)
 movies_raw.head(10)
 
@@ -49,7 +53,16 @@ movies_for_loader = movies[["page_content", "source"]]
 # loading the data into the langchain document:
 docs = DataFrameLoader(movies_for_loader, page_content_column="page_content").load()
 
+# ==== Estimating cost of vector embedding ====
+# Creating the encoder:
+encoder = tiktoken.encoding_for_model("text-embedding-3-large")
+
+# list of the number of tokens of each document:
+nber_tokens_perdoc = [len(encoder.encode(doc.page_content)) for doc in docs]
+
 movies.head(1)
 print(movies.head().iloc[0].page_content)
 movies.movie_description.isna
 print(docs[:3])
+docs
+nber_tokens_perdoc
