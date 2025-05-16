@@ -60,6 +60,10 @@ encoder = tiktoken.encoding_for_model("text-embedding-3-large")
 # list of the number of tokens of each document:
 nber_tokens_perdoc = [len(encoder.encode(doc.page_content)) for doc in docs]
 
+# Total nber of tokens: 
+ttal_nber_tokens = sum(nber_tokens_perdoc)
+ttal_nber_tokens
+
 movies.head(1)
 print(movies.head().iloc[0].page_content)
 movies.movie_description.isna
