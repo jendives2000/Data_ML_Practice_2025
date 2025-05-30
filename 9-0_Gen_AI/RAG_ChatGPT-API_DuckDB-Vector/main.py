@@ -163,7 +163,7 @@ qa_with_sources = RetrievalQAWithSourcesChain.from_chain_type(
 )
 
 # Retrieving with a question:
-qa_with_sources("What is a good kung fu movie?")
+qa_with_sources("Recommend me a good basketball movie?")
 
 cost
 ttal_nber_tokens

@@ -37,6 +37,8 @@ Here are the main steps of the project:
 - Creating the RAG (retriever) and trying it with a question (RetrievalQAWithSourcesChain): 
   - what is a good climate change movie to watch?
 
+Here's a quick demo: 
+![alt text](jeanyves-tran_GenAI_RAG-bot_VectorDB_Langchain_1.gif)
 
 **NOTES**:  
 This app is for local use. This project does not include a deployment on the web or as an app in a marketplace or a binary. 
