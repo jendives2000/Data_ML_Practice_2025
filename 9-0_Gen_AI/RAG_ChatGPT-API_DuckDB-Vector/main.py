@@ -13,7 +13,7 @@ import tiktoken
 from langchain.chains import RetrievalQAWithSourcesChain
 
 # Langchain modules:
-from langchain.document_loaders import DataFrameLoader
+from langchain_community.document_loaders import DataFrameLoader
 from langchain.prompts import PromptTemplate
 from langchain_community.vectorstores import DuckDB
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
@@ -163,7 +163,7 @@ qa_with_sources = RetrievalQAWithSourcesChain.from_chain_type(
 )
 
 # Retrieving with a question:
-qa_with_sources("what is a good climate change movie to watch?")
+qa_with_sources("What is a good kung fu movie?")
 
 cost
 ttal_nber_tokens

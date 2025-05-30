@@ -15,6 +15,8 @@ Source:
 - [DuckDB for Python](https://duckdb.org/docs/installation/?version=stable&environment=python) - DuckDB DBMS
 - [Retrieval Augmented Generation with the OpenAI API & DuckDB](https://www.packtpub.com/product/retrieval-augmented-generation-with-the-openai-api-duckdb/9781806025039?_gl=1*bsv5pl*_gcl_au*MTY1NjQ5NzM3NS4xNzM5NjI4ODI4LjE1MjY5MTc2MDUuMTc0NzE1MjI2MS4xNzQ3MTUyMjYx*FPAU*MTY1NjQ5NzM3NS4xNzM5NjI4ODI4) - Packt Platform | Vincent Vankrunkelsven
 ---
+Question submitted to the app, with its answer:
+![alt text](image.png)
 
 This is a practice project aiming at the creation of a chatbot that can answer questions on movies using the following tech:  
 - LLM: openAI 4o-mini
@@ -36,6 +38,13 @@ Here are the main steps of the project:
   - what is a good climate change movie to watch?
 
 
-**NOTES**: 
-The RAG is processing a similarity search, meaning it answers the questions based on similarities found in its vector DB. A question about the quality of a movie, like "What is the best Action movie" will not apply that quality concept to its answer.
-However, the LLM is taking over for that part and answers the question a more relevant way. 
+**NOTES**:  
+This app is for local use. This project does not include a deployment on the web or as an app in a marketplace or a binary. 
+
+If you are using an interactive view of your Python file (for main.py), you will need to run this code snippet (modified with your own file path) for the OS to work on your preview:  
+>import sys  
+>import os
+
+>sys.path.append("/home/jendives/MLpro/Data_ML_Practice_2025/9-0_Gen_AI/RAG_ChatGPT-API_DuckDB-Vector")
+
+>from utils import count_embeddings
